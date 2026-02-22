@@ -1,6 +1,6 @@
 import java.math.BigInteger;
 
-public class creationtools {
+public class tools {
     public boolean isprime(BigInteger in) {
         if (in.compareTo(BigInteger.ONE) <= 0) return false;
 
