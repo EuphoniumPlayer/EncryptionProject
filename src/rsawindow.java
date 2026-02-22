@@ -19,7 +19,7 @@ public class rsawindow implements ActionListener {
     JButton createkey;
     Font creatorfont = new Font("Arial",Font.PLAIN,20);
     int p,q,e;
-    BigInteger pbigint, qbigint, ebigint;
+    BigInteger pbigint, qbigint, ebigint, dbigint, n, tn;
     JTextField[] fields = new JTextField[3];
 
     rsawindow () {
@@ -58,81 +58,71 @@ public class rsawindow implements ActionListener {
         pfield.setBounds(25, 60, 400, 30);
         fields[0] = pfield;
 
-        invalidplabel = new JLabel("");
+        invalidplabel = new JLabel("No input");
         invalidplabel.setFont(creatorfont);
         invalidplabel.setFocusable(false);
-        invalidplabel.setBounds(25, 105, 200, 30);
+        invalidplabel.setBounds(25, 105, 200, 20);
 
         qlabel = new JLabel("Enter a second prime number");
         qlabel.setFont(creatorfont);
         qlabel.setFocusable(false);
-        qlabel.setBounds(25, 160, 400, 20);
+        qlabel.setBounds(25, 150, 400, 20);
 
         qfield = new JTextField();
         qfield.setEditable(true);
         qfield.addActionListener(this);
-        qfield.setBounds(25, 195, 400, 30);
+        qfield.setBounds(25, 185, 400, 30);
         fields[1] = qfield;
 
-        invalidqlabel = new JLabel("");
+        invalidqlabel = new JLabel("No input");
         invalidqlabel.setFocusable(false);
         invalidqlabel.setFont(creatorfont);
-        invalidqlabel.setBounds(25, 240, 200, 30);
+        invalidqlabel.setBounds(25, 230, 200, 20);
 
         elabel = new JLabel("Enter a public encryption number");
         elabel.setFont(creatorfont);
         elabel.setFocusable(false);
-        elabel.setBounds(25, 295, 400, 20);
+        elabel.setBounds(25, 275, 400, 20);
 
         efield = new JTextField();
         efield.setEditable(true);
         efield.addActionListener(this);
-        efield.setBounds(25, 330, 400, 30);
+        efield.setBounds(25, 310, 400, 30);
         fields[2] = efield;
 
-        for (int i=0;i<3;i++) {
-            final int number = i;
-            fields[i].setFont(creatorfont);
-            fields[i].getDocument().addDocumentListener(new DocumentListener() {
-                @Override
-                public void changedUpdate(DocumentEvent e) {fieldUpdate(number);}
-                @Override
-                public void removeUpdate(DocumentEvent e) {fieldUpdate(number);}
-                @Override
-                public void insertUpdate(DocumentEvent e) {fieldUpdate(number);}
-            });
-        }
-
-        invalidelabel = new JLabel();
+        invalidelabel = new JLabel("No inputs");
         invalidelabel.setFocusable(false);
         invalidelabel.setFont(creatorfont);
-        invalidelabel.setBounds(25, 375, 300, 30);
+        invalidelabel.setBounds(25, 355, 300, 20);
 
         createkey = new JButton("Create Keys");
         createkey.setFocusable(false);
         createkey.setFont(creatorfont);
         createkey.setEnabled(false);
-        createkey.setBounds(25, 425, 400, 40);
+        createkey.addActionListener(this);
+        createkey.setBounds(25, 400, 400, 40);
 
         publicoutlabel = new JLabel("Public key pair");
         publicoutlabel.setFocusable(false);
         publicoutlabel.setFont(creatorfont);
-        publicoutlabel.setBounds(25, 485, 150, 20);
+        publicoutlabel.setBounds(25, 465, 150, 20);
 
         publicout = new JTextField("");
         publicout.setFocusable(true);
+        publicout.setFont(creatorfont);
         publicout.setEditable(false);
-        publicout.setBounds(25, 520, 400, 30);
+        publicout.setBounds(25, 500, 400, 30);
 
         privateoutlabel = new JLabel("Private key pair");
         privateoutlabel.setFocusable(false);
         privateoutlabel.setFont(creatorfont);
-        privateoutlabel.setBounds(25, 575, 400, 20);
+        privateoutlabel.setBounds(25, 555, 400, 20);
 
         privateout = new JTextField();
         privateout.setEditable(false);
         privateout.setFocusable(true);
-        privateout.setBounds(25, 610, 400, 30);
+        privateout.setFont(creatorfont);
+        privateout.setBounds(25, 590, 400, 30);
 
         creator = new JFrame("Create a key");
         creator.setSize(500, 700);
@@ -153,6 +143,19 @@ public class rsawindow implements ActionListener {
         creator.add(publicout);
         creator.add(privateoutlabel);
         creator.add(privateout);
+
+        for (int i=0;i<3;i++) {
+            final int number = i;
+            fields[i].setFont(creatorfont);
+            fields[i].getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void changedUpdate(DocumentEvent e) {fieldUpdate(number);}
+                @Override
+                public void removeUpdate(DocumentEvent e) {fieldUpdate(number);}
+                @Override
+                public void insertUpdate(DocumentEvent e) {fieldUpdate(number);}
+            });
+        }
     }//end constructor
 
     public static void main(String[] args) {
@@ -179,8 +182,12 @@ public class rsawindow implements ActionListener {
                     creator.repaint();
                 }
             } catch (NumberFormatException error) {
-                invalidplabel.setText("Invalid input");
-                creator.repaint();
+                if (pfield.getText().equals("")) {
+                    invalidplabel.setText("No input");
+                } else {
+                    invalidplabel.setText("Invalid input");
+                    creator.repaint();
+                }
             }//end try
         }//end checkp
         if (event.getSource() == qfield) {
@@ -195,8 +202,12 @@ public class rsawindow implements ActionListener {
                     creator.repaint();
                 }
             } catch (NumberFormatException error) {
-                invalidqlabel.setText("Invalid input");
-                creator.repaint();
+                if (qfield.getText().equals("")) {
+                    invalidqlabel.setText("No input");
+                } else {
+                    invalidqlabel.setText("Invalid input");
+                    creator.repaint();
+                }
             }//end try
         }//end checkq
         if (event.getSource() == efield) {
@@ -214,8 +225,12 @@ public class rsawindow implements ActionListener {
                     ebigint = new BigInteger(String.valueOf(e));
                     inputsvalid = true;
                 } catch (NumberFormatException error) {
-                    invalidelabel.setText("Invalid input(s)");
-                    creator.repaint();
+                    if (efield.getText().equals("")) {
+                        invalidelabel.setText("No input");
+                    } else {
+                        invalidelabel.setText("Invalid input");
+                        creator.repaint();
+                    }
                     inputsvalid = false;
                 }
                 if (inputsvalid) {
@@ -223,10 +238,9 @@ public class rsawindow implements ActionListener {
                         invalidelabel.setText("Error: Primes not prime");
                         creator.repaint();
                     } else {
-                        BigInteger n, tn;
                         n = pbigint.multiply(qbigint);
                         tn = (pbigint.subtract(BigInteger.ONE).multiply(qbigint.subtract(BigInteger.ONE)));
-                        if (!tools.isgcd1(ebigint, tn)) {
+                        if (!tools.isgcd1(ebigint, tn) || ebigint.equals(BigInteger.ONE)) {
                             invalidelabel.setText("Not compatible");
                             creator.repaint();
                         } else {
@@ -238,7 +252,11 @@ public class rsawindow implements ActionListener {
                 }//end valid function
             }//end input check
         }//end checke
-
+        if (event.getSource() == createkey) {
+            dbigint = ebigint.modInverse(tn);
+            publicout.setText("("+ebigint.toString()+", "+n.toString()+")");
+            privateout.setText("("+dbigint.toString()+", "+n.toString()+")");
+        }//end createkey
     }//end actions
 
     public void fieldUpdate(int field) {
@@ -247,9 +265,8 @@ public class rsawindow implements ActionListener {
             pfield.postActionEvent();
         } else if (field == 1) {
             qfield.postActionEvent();
-        } else if (field == 2) {
-            efield.postActionEvent();
         }
+        efield.postActionEvent();
         creator.repaint();
     }
 
