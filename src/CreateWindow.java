@@ -9,13 +9,16 @@ public class CreateWindow implements ActionListener {
     private JFrame creator;
     private JLabel plabel, qlabel, elabel, invalidplabel, invalidqlabel, invalidelabel, publicoutlabel, privateoutlabel, invalidcreate;
     private JTextField pfield, qfield, efield, publicout, privateout;
-    private JButton createkey, savekeys;
+    private JButton createkey, savekeys, back;
     private Font mainfont = new Font("Arial",Font.PLAIN,20);
     private int p,q,e;
     private BigInteger pbigint, qbigint, ebigint, dbigint, n, tn;
     private JTextField[] fields = new JTextField[3];
 
     private Tools tools = new Tools();
+
+    //Command caller
+    private static final Command command = new Command();
 
     public CreateWindow() {
         plabel = new JLabel("Enter a prime number");
@@ -96,8 +99,14 @@ public class CreateWindow implements ActionListener {
         privateout.setFont(mainfont);
         privateout.setBounds(25, 590, 400, 30);
 
+        back = new JButton("Back");
+        back.setFont(mainfont);
+        back.setFocusable(false);
+        back.addActionListener(this);
+        back.setBounds(25, 645, 400, 40);
+
         creator = new JFrame("Create a key");
-        creator.setSize(500, 700);
+        creator.setSize(500, 750);
         creator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         creator.setLayout(null);
 
@@ -115,6 +124,7 @@ public class CreateWindow implements ActionListener {
         creator.add(publicout);
         creator.add(privateoutlabel);
         creator.add(privateout);
+        creator.add(back);
 
         for (int i=0;i<3;i++) {
             final int number = i;
@@ -226,6 +236,10 @@ public class CreateWindow implements ActionListener {
             publicout.setText("("+ebigint.toString()+", "+n.toString()+")");
             privateout.setText("("+dbigint.toString()+", "+n.toString()+")");
         }//end createkey
+        if (event.getSource() == back) {
+            invisible();
+            command.setMenuVisible(true);
+        }
     }//end actionPerformed
 
     private void creatorFieldUpdate(int field) {

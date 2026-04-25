@@ -2,19 +2,16 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class rsawindow implements ActionListener {
+public class Menu implements ActionListener {
     //menu stuff
     private JFrame menu;
     private JButton create, encrypt;
     private final Font menufont = new Font("Arial",Font.BOLD,15);
 
-    //creator
-    private final CreateWindow creator = new CreateWindow();
+    //Command caller
+    private static final Command command = new Command();
 
-    //encrypter stuff
-    private final EncryptorWindow encryptor = new EncryptorWindow();
-
-    rsawindow () {
+    Menu() {
         //menu
         menu = new JFrame("Menu");
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,21 +36,16 @@ public class rsawindow implements ActionListener {
 
     }//end constructor
 
-    public static void main(String[] args) {
-        @SuppressWarnings("unused")
-        rsawindow menu = new rsawindow();
-    }//end main
-
     // actions
     @Override
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == create) {
             this.invisible();
-            creator.visible();
+            command.setCreateVisible(true);
         }//end create button
         if (event.getSource() == encrypt) {
             this.invisible();
-            encryptor.visible();
+            command.setEncryptVisible(true);
         }//end encrypt button
     }//end actions
 
