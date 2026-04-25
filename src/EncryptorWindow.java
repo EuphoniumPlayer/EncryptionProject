@@ -7,7 +7,7 @@ import javax.swing.event.DocumentListener;
 
 public class EncryptorWindow implements ActionListener {
     private JFrame encryptor;
-    private JButton run, encryption, decryption;
+    private JButton run, encryption, decryption, back;
     private JLabel keylabel, moduluslabel, messagelabel, outputlabel, modelabel;
     private JTextField keyfield, modulusfield;
     private JTextArea messagefield, output;
@@ -19,6 +19,7 @@ public class EncryptorWindow implements ActionListener {
 
     private final Font mainfont = new Font("Arial",Font.PLAIN,20);
     private final Tools tools = new Tools();
+    private static final Command command = new Command();
 
     public EncryptorWindow() {
         keylabel = new JLabel("Key");
@@ -94,6 +95,12 @@ public class EncryptorWindow implements ActionListener {
         output.setBounds(25, 535, 400, 90);
         encryptareas[1] = output;
 
+        back = new JButton("Back");
+        back.setFont(mainfont);
+        back.setFocusable(false);
+        back.addActionListener(this);
+        back.setBounds(25, 650, 400, 40);
+
         encryptor = new JFrame("Process a message");
         encryptor.setSize(500, 750);
         encryptor.setLayout(null);
@@ -111,6 +118,7 @@ public class EncryptorWindow implements ActionListener {
         encryptor.add(modelabel);
         encryptor.add(outputlabel);
         encryptor.add(output);
+        encryptor.add(back);
 
 //        back.setBounds(25,655,400,30);
 //        encryptor.add(back);
@@ -182,12 +190,16 @@ public class EncryptorWindow implements ActionListener {
                 output.setText(tools.decrypt(key, mod, input));
             }
         }
-    }
+        if (event.getSource() == back) {
+            invisible();
+            command.setMenuVisible(true);
+        }
+    }//end actionPerformed
 
     public void encryptorUpdate() {
         int key, mod;
         BigInteger bigkey, bigmod;
-        if (keyfield.getText().equals("") || modulusfield.getText().equals("") || messagefield.getText().equals("")) {
+        if (keyfield.getText().isEmpty() || modulusfield.getText().isEmpty() || messagefield.getText().isEmpty()) {
             run.setEnabled(false);
             run.setToolTipText("Blank field(s)");
             encryptor.repaint();
