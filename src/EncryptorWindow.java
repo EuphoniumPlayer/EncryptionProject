@@ -18,7 +18,7 @@ public class EncryptorWindow implements ActionListener {
     private int mode;
 
     private final Font mainfont = new Font("Arial",Font.PLAIN,20);
-    private final tools tools = new tools();
+    private final Tools tools = new Tools();
 
     public EncryptorWindow() {
         keylabel = new JLabel("Key");

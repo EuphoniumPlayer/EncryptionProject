@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class tools {
+public class Tools {
     public boolean isprime(BigInteger in) {
         if (in.compareTo(BigInteger.ONE) <= 0) return false;
 

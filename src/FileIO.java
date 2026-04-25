@@ -22,7 +22,7 @@ public class FileIO {
                 }
             }
         } catch (NullPointerException e) {
-            throw new NotFoundException("Specified directory not found");
+            throw new NotFoundException(e.getMessage());
         } catch (Exception e) {
             error += "Error: " + e.getMessage();
         }

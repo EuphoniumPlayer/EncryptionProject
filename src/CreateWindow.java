@@ -6,7 +6,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class CreateWindow implements ActionListener {
-
     private JFrame creator;
     private JLabel plabel, qlabel, elabel, invalidplabel, invalidqlabel, invalidelabel, publicoutlabel, privateoutlabel, invalidcreate;
     private JTextField pfield, qfield, efield, publicout, privateout;
@@ -16,7 +15,7 @@ public class CreateWindow implements ActionListener {
     private BigInteger pbigint, qbigint, ebigint, dbigint, n, tn;
     private JTextField[] fields = new JTextField[3];
 
-    private tools tools = new tools();
+    private Tools tools = new Tools();
 
     public CreateWindow() {
         plabel = new JLabel("Enter a prime number");

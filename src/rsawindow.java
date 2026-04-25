@@ -1,23 +1,18 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.math.BigInteger;
 
 public class rsawindow implements ActionListener {
-    protected tools tools = new tools();
     //menu stuff
     private JFrame menu;
     private JButton create, encrypt;
     private final Font menufont = new Font("Arial",Font.BOLD,15);
 
-    //creator stuff
-    private final Font mainfont = new Font("Arial",Font.PLAIN,20);
+    //creator
     private final CreateWindow creator = new CreateWindow();
 
     //encrypter stuff
-    EncryptorWindow encryptor = new EncryptorWindow();
+    private final EncryptorWindow encryptor = new EncryptorWindow();
 
     rsawindow () {
         //menu
@@ -42,12 +37,6 @@ public class rsawindow implements ActionListener {
         menu.add(encrypt);
         menu.setVisible(true);
 
-        //creator
-
-
-        //encryption stuff
-
-
     }//end constructor
 
     public static void main(String[] args) {
@@ -61,12 +50,11 @@ public class rsawindow implements ActionListener {
         if (event.getSource() == create) {
             this.invisible();
             creator.visible();
-            //window = 1;
-        }//end create
+        }//end create button
         if (event.getSource() == encrypt) {
             this.invisible();
             encryptor.visible();
-        }
+        }//end encrypt button
     }//end actions
 
     public void visible() {
