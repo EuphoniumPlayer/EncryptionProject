@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -44,8 +46,25 @@ public class FileIOWindow implements ActionListener {
         window.setVisible(false);
     }
 
+    private void openFS() {
+        JFileChooser chooser = new JFileChooser();
+
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Key Files (*.keys)", "keys");
+        chooser.setFileFilter(filter);
+
+        int approved = chooser.showOpenDialog(window);
+        if (approved == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = chooser.getSelectedFile();
+
+            String filePath = selectedFile.getAbsolutePath();
+            directoryField.setText(filePath);
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent event) {
-
+        if (event.getSource() == openFS) {
+            openFS();
+        }
     }
 }
