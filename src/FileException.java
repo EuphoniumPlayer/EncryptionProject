@@ -9,6 +9,10 @@ public class FileException extends Exception {
         super(errorMessage);
     }
 
+    public FileException(Exception e) {
+        super(e);
+    }
+
     public FileException(String errorMessage, boolean state) {
         if (state) {
             this.errorMessage = "Unexpected error: " + errorMessage;
