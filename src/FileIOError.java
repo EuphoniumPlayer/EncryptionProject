@@ -5,8 +5,8 @@ import java.awt.event.*;
 public class FileIOError implements ActionListener {
     private JFrame errorWindow;
     private JButton close,retry;
-    private JLabel errorOccuredLabel,error,exception;
-    private String exceptionText;
+    private JLabel errorOccuredLabel,error;
+    private String exceptionText="";
 
     private static final Font font = new Font("Arial",Font.PLAIN,15);
     private static final Font bold = new Font("Arial",Font.BOLD,15);
@@ -34,16 +34,16 @@ public class FileIOError implements ActionListener {
         errorOccuredLabel = new JLabel("An error occurred:");
         errorOccuredLabel.setFont(font);
         errorOccuredLabel.setFocusable(true);
-        errorOccuredLabel.setBounds(20, 20, 400, 30);
+        errorOccuredLabel.setBounds(20, 20, 400, 10);
 
         error = new JLabel("");
         error.setFont(font);
         error.setFocusable(true);
         setErrorLabel();
-        error.setBounds(20,60,400,60);
+        error.setBounds(20,35,400,60);
 
         errorWindow.add(close);
-        errorWindow.add(retry);
+        //errorWindow.add(retry);
         errorWindow.add(errorOccuredLabel);
         errorWindow.add(error);
         errorWindow.setVisible(true);
@@ -51,9 +51,9 @@ public class FileIOError implements ActionListener {
 
     private void setErrorLabel() {
         if (this.exceptionText.isEmpty()) {
-            this.exception.setText("Unknown error");
+            this.error.setText("Unknown error");
         } else {
-            this.exception.setText(this.exceptionText);
+            this.error.setText(this.exceptionText);
         }
     }//end setErrorLabel
 

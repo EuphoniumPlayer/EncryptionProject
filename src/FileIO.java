@@ -15,7 +15,7 @@ public class FileIO {
                 File file = chooser.getSelectedFile();
                 return file.getAbsolutePath();
             } catch (Exception e) {
-                throw new FileException(e.getMessage(), true);
+                throw new FileException(e.getMessage());
             }
         } else {
             throw new FileException(FileException.FILE_EXPLORER_ERROR);
@@ -38,7 +38,7 @@ public class FileIO {
         } catch (IOException ioException) {
             throw new FileException(ioException);
         } catch (Exception exception) {
-            throw new FileException(exception.getMessage(), true);
+            throw new FileException(exception.getMessage());
         }
     }
 
@@ -48,17 +48,27 @@ public class FileIO {
             if (!path.endsWith(".keys")) {
                 path += ".keys";
             }
-            BufferedWriter write = new BufferedWriter(new FileWriter(path));
-            write.write(e.toString());
-            write.newLine();
-            write.write(d.toString());
-            write.newLine();
-            write.write(m.toString());
-            write.close();
+            File file = new File(path);
+            File publicFile = new File(file.getParent(),"public-" + file.getName());
+            File privateFile = new File(file.getParent(), "private-" + file.getName());
+
+            //public
+            BufferedWriter writepub = new BufferedWriter(new FileWriter(publicFile));
+            writepub.write(e.toString());
+            writepub.newLine();
+            writepub.write(m.toString());
+            writepub.close();
+
+            //private
+            BufferedWriter writepriv = new BufferedWriter(new FileWriter(privateFile));
+            writepriv.write(d.toString());
+            writepriv.newLine();
+            writepriv.write(m.toString());
+            writepriv.close();
         } catch (FileException fileException) {
             throw fileException;
         } catch (IOException ioException) {
             throw new FileException(ioException);
         }
-    }
+    }//end writeFile
 }
