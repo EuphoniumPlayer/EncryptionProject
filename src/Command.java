@@ -3,6 +3,7 @@ public class Command {
     private static final CreateWindow create = new CreateWindow();
     private static final EncryptorWindow encryptor = new EncryptorWindow();
     private static final FileIO fileIO = new FileIO();
+    private static final FileIOError fileErrorWindow = new FileIOError();
 
     public static void main(String[] args) {
         menu.visible();
@@ -29,18 +30,24 @@ public class Command {
             encryptor.invisible();
         }
     }
-    public String[] readFile() {
+    public String[] readFile() throws FileException {
         try {
             return fileIO.readFile();
-        } catch (FileException e) {
-            throw e;
+        } catch (FileException error) {
+            throw error;
         }
     }
-    public void writeFile(int e, int d, int m) {
+    public void writeFile(int e, int d, int m) throws FileException {
         try {
             fileIO.writeFile(e,d,m);
         } catch (FileException error) {
             throw error;
         }
+    }
+    public void displayFileError(FileException error) {
+        fileErrorWindow.displayError(error);
+    }
+    public void displayFileError(String error) {
+        fileErrorWindow.displayError(error);
     }
 }

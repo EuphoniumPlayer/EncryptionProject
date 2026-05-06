@@ -1,4 +1,4 @@
-public class FileException extends RuntimeException {
+public class FileException extends Exception {
     public static final int FILE_NOT_FOUND = 1;
     public static final int DIRECTORY_NOT_FOUND = 2;
     public static final int FILE_EXPLORER_ERROR = 3;

@@ -23,22 +23,29 @@ public class FileIO {
     }
 
     public String[] readFile() throws FileException {
-        String e,d,m;
-        String[] values = new String[3];
+        String k,m;
+        String[] values = new String[2];
         try {
             BufferedReader in = new BufferedReader(new FileReader(getFilePath()));
-            e = in.readLine();
-            d = in.readLine();
+            k = in.readLine();
             m = in.readLine();
             in.close();
-            values[0] = e;
-            values[1] = d;
-            values[2] = m;
-            return values;
-        } catch (IOException ioException) {
-            throw new FileException(ioException);
+            if (m.isEmpty() && k.isEmpty()) {
+                throw new FileException("Invalid file: File is empty");
+            } else if (m.isEmpty()) {
+                throw new FileException("Invalid file: Only one piece of data present (two required)");
+            }
+            try {
+               Integer.parseInt(k);
+               Integer.parseInt(m);
+               values[0] = k;
+               values[1] = m;
+               return values;
+            } catch (NumberFormatException e) {
+                throw new FileException("Invalid file data: Non-integers");
+            }
         } catch (Exception exception) {
-            throw new FileException(exception.getMessage());
+            throw new FileException(exception);
         }
     }
 

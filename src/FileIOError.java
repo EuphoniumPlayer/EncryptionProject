@@ -46,7 +46,7 @@ public class FileIOError implements ActionListener {
         //errorWindow.add(retry);
         errorWindow.add(errorOccuredLabel);
         errorWindow.add(error);
-        errorWindow.setVisible(true);
+        errorWindow.setVisible(false);
     }//end of Constructor
 
     private void setErrorLabel() {
@@ -59,6 +59,12 @@ public class FileIOError implements ActionListener {
 
     public void displayError(String error) {
         this.exceptionText = error;
+        setErrorLabel();
+        this.errorWindow.setVisible(true);
+    }
+
+    public void displayError(FileException e) {
+        this.exceptionText = e.getMessage();
         setErrorLabel();
         this.errorWindow.setVisible(true);
     }
