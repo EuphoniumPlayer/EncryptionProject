@@ -17,8 +17,10 @@ public class FileIO {
             } catch (Exception e) {
                 throw new FileException(e.getMessage());
             }
-        } else {
+        } else if (approved != JFileChooser.CANCEL_OPTION) {
             throw new FileException(FileException.FILE_EXPLORER_ERROR);
+        } else {
+            throw new FileException("ignore");
         }
     }
 

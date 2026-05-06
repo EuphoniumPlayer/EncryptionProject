@@ -208,7 +208,9 @@ public class EncryptorWindow implements ActionListener {
                 keyfield.setText(keys[0]);
                 modulusfield.setText(keys[1]);
             } catch (FileException error) {
-                command.displayFileError(error);
+                if (!error.getMessage().equals("ignore")) {
+                    command.displayFileError(error);
+                }
             }
         }//end loadFromFile
     }//end actionPerformed

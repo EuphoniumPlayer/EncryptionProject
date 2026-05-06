@@ -5,7 +5,8 @@ import java.awt.event.*;
 public class FileIOError implements ActionListener {
     private JFrame errorWindow;
     private JButton close,retry;
-    private JLabel errorOccuredLabel,error;
+    private JLabel errorOccuredLabel;
+    private JTextArea error;
     private String exceptionText="";
 
     private static final Font font = new Font("Arial",Font.PLAIN,15);
@@ -36,9 +37,11 @@ public class FileIOError implements ActionListener {
         errorOccuredLabel.setFocusable(true);
         errorOccuredLabel.setBounds(20, 20, 400, 10);
 
-        error = new JLabel("");
+        error = new JTextArea("");
         error.setFont(font);
         error.setFocusable(true);
+        error.setEditable(false);
+        error.setLineWrap(true);
         setErrorLabel();
         error.setBounds(20,35,400,60);
 
