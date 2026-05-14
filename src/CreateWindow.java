@@ -99,14 +99,21 @@ public class CreateWindow implements ActionListener {
         privateout.setFont(mainfont);
         privateout.setBounds(25, 590, 400, 30);
 
+        savekeys = new JButton("Save Keys to File");
+        savekeys.setFont(mainfont);
+        savekeys.setFocusable(false);
+        savekeys.addActionListener(this);
+        savekeys.setBounds(25, 645, 400, 40);
+        savekeys.setEnabled(false);
+
         back = new JButton("Back");
         back.setFont(mainfont);
         back.setFocusable(false);
         back.addActionListener(this);
-        back.setBounds(25, 645, 400, 40);
+        back.setBounds(25, 700, 400, 40);
 
         creator = new JFrame("Create a key");
-        creator.setSize(500, 750);
+        creator.setSize(500, 800);
         creator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         creator.setLayout(null);
 
@@ -124,6 +131,7 @@ public class CreateWindow implements ActionListener {
         creator.add(publicout);
         creator.add(privateoutlabel);
         creator.add(privateout);
+        creator.add(savekeys);
         creator.add(back);
 
         for (int i=0;i<3;i++) {
@@ -235,11 +243,29 @@ public class CreateWindow implements ActionListener {
             dbigint = ebigint.modInverse(tn);
             publicout.setText("("+ebigint.toString()+", "+n.toString()+")");
             privateout.setText("("+dbigint.toString()+", "+n.toString()+")");
+            savekeys.setEnabled(true);
         }//end createkey
         if (event.getSource() == back) {
             invisible();
             command.setMenuVisible(true);
-        }
+        }//end back
+        if (event.getSource() == savekeys) {
+            try {
+                String es,ds,ms;
+                es = ebigint.toString();
+                ds = dbigint.toString();
+                ms = n.toString();
+                int e,d,m;
+                e = Integer.parseInt(es);
+                d = Integer.parseInt(ds);
+                m = Integer.parseInt(ms);
+                command.writeFile(e,d,m);
+            } catch (FileException error) {
+                if (!error.getMessage().equals("ignore")) {
+                    command.displayFileError(error);
+                }
+            }
+        }//end savekeys
     }//end actionPerformed
 
     private void creatorFieldUpdate(int field) {

@@ -7,7 +7,7 @@ import javax.swing.event.DocumentListener;
 
 public class EncryptorWindow implements ActionListener {
     private JFrame encryptor;
-    private JButton run, encryption, decryption, back;
+    private JButton run, encryption, decryption, back, loadFromFile;
     private JLabel keylabel, moduluslabel, messagelabel, outputlabel, modelabel;
     private JTextField keyfield, modulusfield;
     private JTextArea messagefield, output;
@@ -99,10 +99,16 @@ public class EncryptorWindow implements ActionListener {
         back.setFont(mainfont);
         back.setFocusable(false);
         back.addActionListener(this);
-        back.setBounds(25, 650, 400, 40);
+        back.setBounds(25, 705, 400, 40);
+
+        loadFromFile = new JButton("Load Key File");
+        loadFromFile.setFont(mainfont);
+        loadFromFile.setFocusable(false);
+        loadFromFile.addActionListener(this);
+        loadFromFile.setBounds(25, 650, 400, 40);
 
         encryptor = new JFrame("Process a message");
-        encryptor.setSize(500, 750);
+        encryptor.setSize(500, 800);
         encryptor.setLayout(null);
         encryptor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -119,6 +125,7 @@ public class EncryptorWindow implements ActionListener {
         encryptor.add(outputlabel);
         encryptor.add(output);
         encryptor.add(back);
+        encryptor.add(loadFromFile);
 
 //        back.setBounds(25,655,400,30);
 //        encryptor.add(back);
@@ -194,6 +201,18 @@ public class EncryptorWindow implements ActionListener {
             invisible();
             command.setMenuVisible(true);
         }
+        if (event.getSource() == loadFromFile) {
+            try {
+                String[] keys = new String[2];
+                keys = command.readFile();
+                keyfield.setText(keys[0]);
+                modulusfield.setText(keys[1]);
+            } catch (FileException error) {
+                if (!error.getMessage().equals("ignore")) {
+                    command.displayFileError(error);
+                }
+            }
+        }//end loadFromFile
     }//end actionPerformed
 
     public void encryptorUpdate() {

@@ -1,9 +1,11 @@
+import java.awt.*;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Tools {
+    public static final Font mainfont = new Font("Arial",Font.PLAIN,20);
     public boolean isprime(BigInteger in) {
         if (in.compareTo(BigInteger.ONE) <= 0) return false;
 
