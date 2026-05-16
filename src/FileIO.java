@@ -1,6 +1,7 @@
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.*;
 import java.io.*;
+import java.math.BigInteger;
 
 public class FileIO {
     private static String getFilePath() throws FileException {
@@ -38,11 +39,11 @@ public class FileIO {
                 throw new FileException("Invalid file: Only one piece of data present (two required)");
             }
             try {
-               Integer.parseInt(k);
-               Integer.parseInt(m);
-               values[0] = k;
-               values[1] = m;
-               return values;
+                new BigInteger(k);
+                new BigInteger(m);
+                values[0] = k;
+                values[1] = m;
+                return values;
             } catch (NumberFormatException e) {
                 throw new FileException("Invalid file data: Non-integers");
             }
@@ -51,7 +52,7 @@ public class FileIO {
         }
     }
 
-    public void writeFile(Integer e, Integer d, Integer m) throws FileException {
+    public void writeFile(BigInteger e, BigInteger d, BigInteger m) throws FileException {
         try {
             String path = getFilePath();
             if (!path.endsWith(".keys")) {

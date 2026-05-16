@@ -9,9 +9,8 @@ public class CreateWindow implements ActionListener {
     private JFrame creator;
     private JLabel plabel, qlabel, elabel, invalidplabel, invalidqlabel, invalidelabel, publicoutlabel, privateoutlabel, invalidcreate;
     private JTextField pfield, qfield, efield, publicout, privateout;
-    private JButton createkey, savekeys, back;
+    private JButton createkey, savekeys, back, random;
     private Font mainfont = new Font("Arial",Font.PLAIN,20);
-    private int p,q,e;
     private BigInteger pbigint, qbigint, ebigint, dbigint, n, tn;
     private JTextField[] fields = new JTextField[3];
 
@@ -75,7 +74,14 @@ public class CreateWindow implements ActionListener {
         createkey.setFont(mainfont);
         createkey.setEnabled(false);
         createkey.addActionListener(this);
-        createkey.setBounds(25, 400, 400, 40);
+        createkey.setBounds(25, 400, 350, 40);
+
+        //fix
+        random = new JButton("⚄");
+        random.setFocusable(false);
+        random.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 20));
+        random.addActionListener(this);
+        random.setBounds(385,400,40,40);
 
         publicoutlabel = new JLabel("Public key pair");
         publicoutlabel.setFocusable(false);
@@ -127,6 +133,7 @@ public class CreateWindow implements ActionListener {
         creator.add(efield);
         creator.add(invalidelabel);
         creator.add(createkey);
+        creator.add(random);
         creator.add(publicoutlabel);
         creator.add(publicout);
         creator.add(privateoutlabel);
@@ -159,8 +166,7 @@ public class CreateWindow implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == pfield) {
             try {
-                p = Integer.parseInt(pfield.getText());
-                pbigint = new BigInteger(String.valueOf(p));
+                pbigint = new BigInteger(pfield.getText());
                 if (!tools.isprime(pbigint)) {
                     invalidplabel.setText("Not prime");
                     creator.repaint();
@@ -179,8 +185,7 @@ public class CreateWindow implements ActionListener {
         }//end checkp
         if (event.getSource() == qfield) {
             try {
-                q = Integer.parseInt(qfield.getText());
-                qbigint = new BigInteger(String.valueOf(q));
+                qbigint = new BigInteger(qfield.getText());
                 if (!tools.isprime(qbigint)) {
                     invalidqlabel.setText("Not prime");
                     creator.repaint();
@@ -204,12 +209,9 @@ public class CreateWindow implements ActionListener {
                 creator.repaint();
             } else {
                 try {
-                    p = Integer.parseInt(pfield.getText());
-                    pbigint = new BigInteger(String.valueOf(p));
-                    q = Integer.parseInt(qfield.getText());
-                    qbigint = new BigInteger(String.valueOf(q));
-                    e = Integer.parseInt(efield.getText());
-                    ebigint = new BigInteger(String.valueOf(e));
+                    pbigint = new BigInteger(pfield.getText());
+                    qbigint = new BigInteger(qfield.getText());
+                    ebigint = new BigInteger(efield.getText());
                     inputsvalid = true;
                 } catch (NumberFormatException error) {
                     if (efield.getText().equals("")) {
@@ -251,15 +253,7 @@ public class CreateWindow implements ActionListener {
         }//end back
         if (event.getSource() == savekeys) {
             try {
-                String es,ds,ms;
-                es = ebigint.toString();
-                ds = dbigint.toString();
-                ms = n.toString();
-                int e,d,m;
-                e = Integer.parseInt(es);
-                d = Integer.parseInt(ds);
-                m = Integer.parseInt(ms);
-                command.writeFile(e,d,m);
+                command.writeFile(ebigint,dbigint,n);
             } catch (FileException error) {
                 if (!error.getMessage().equals("ignore")) {
                     command.displayFileError(error);

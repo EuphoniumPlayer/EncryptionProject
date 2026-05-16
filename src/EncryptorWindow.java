@@ -11,8 +11,6 @@ public class EncryptorWindow implements ActionListener {
     private JLabel keylabel, moduluslabel, messagelabel, outputlabel, modelabel;
     private JTextField keyfield, modulusfield;
     private JTextArea messagefield, output;
-    private int key, modulus;
-    private BigInteger bigkey, bigmod;
     private JTextField[] encryptfields = new JTextField[2];
     private JTextArea[] encryptareas = new JTextArea[2];
     private int mode;

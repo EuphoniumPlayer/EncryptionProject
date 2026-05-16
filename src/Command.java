@@ -1,3 +1,5 @@
+import java.math.BigInteger;
+
 public class Command {
     private static final Menu menu = new Menu();
     private static final CreateWindow create = new CreateWindow();
@@ -37,7 +39,7 @@ public class Command {
             throw error;
         }
     }
-    public void writeFile(int e, int d, int m) throws FileException {
+    public void writeFile(BigInteger e, BigInteger d, BigInteger m) throws FileException {
         try {
             fileIO.writeFile(e,d,m);
         } catch (FileException error) {
