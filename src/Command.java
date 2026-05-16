@@ -1,13 +1,34 @@
+import javax.swing.*;
+import java.awt.*;
 import java.math.BigInteger;
 
 public class Command {
-    private static final Menu menu = new Menu();
-    private static final CreateWindow create = new CreateWindow();
-    private static final EncryptorWindow encryptor = new EncryptorWindow();
-    private static final FileIO fileIO = new FileIO();
-    private static final FileIOError fileErrorWindow = new FileIOError();
+    private static Menu menu;
+    private static CreateWindow create;
+    private static EncryptorWindow encryptor;
+    private static FileIO fileIO;
+    private static FileIOError fileErrorWindow;
 
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            UIManager.put("nimbusBase",new Color(18,18,18));
+            UIManager.put("nimbusBlueGrey",new Color(25,25,25));
+            UIManager.put("control", new Color(28,28,28));
+            UIManager.put("text", Color.WHITE);
+            UIManager.put("nimbusLightBackground", new Color(20,20,20));
+            UIManager.put("nimbusSelectedText", Color.WHITE);
+            UIManager.put("nimbusSelectionBackground", new Color(60,60,60));
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+
+        menu = new Menu();
+        create = new CreateWindow();
+        encryptor = new EncryptorWindow();
+        fileIO = new FileIO();
+        fileErrorWindow = new FileIOError();
+
         menu.visible();
     }
 

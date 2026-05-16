@@ -77,9 +77,9 @@ public class CreateWindow implements ActionListener {
         createkey.setBounds(25, 400, 350, 40);
 
         //fix
-        random = new JButton("⚄");
+        random = new JButton("\u2684");
         random.setFocusable(false);
-        random.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 20));
+        random.setFont(new Font("Dialog", Font.PLAIN, 20));
         random.addActionListener(this);
         random.setBounds(385,400,40,40);
 
