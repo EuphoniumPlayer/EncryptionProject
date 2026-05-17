@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.image.BufferedImage;
 
 public class CreateWindow implements ActionListener {
     private JFrame creator;
@@ -77,9 +78,8 @@ public class CreateWindow implements ActionListener {
         createkey.setBounds(25, 400, 350, 40);
 
         //fix
-        random = new JButton("\u2684");
+        random = new JButton(createDieIcon());
         random.setFocusable(false);
-        random.setFont(new Font("Dialog", Font.PLAIN, 20));
         random.addActionListener(this);
         random.setBounds(385,400,40,40);
 
@@ -262,6 +262,31 @@ public class CreateWindow implements ActionListener {
         }//end savekeys
     }//end actionPerformed
 
+    private ImageIcon createDieIcon() {
+        BufferedImage img = new BufferedImage(24,24,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = img.createGraphics();
+        //g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        //Border
+        g.setColor(Color.BLACK);
+        g.fillRect(0,0,24,24);
+
+        //Background
+        g.setColor(Color.WHITE);
+        g.fillRect(1,1,22,22);
+
+        //Five dot pattern
+        g.setColor(Color.BLACK);
+        g.fillRect(3,3,6,6);//top left
+        g.fillRect(15,3,6,6);//top right
+        g.fillRect(9,9,6,6);//center
+        g.fillRect(3,15,6,6);//bottom left
+        g.fillRect(15,15,6,6);//bottom right
+
+        g.dispose();
+        return new ImageIcon(img);
+    }
+
     private void creatorFieldUpdate(int field) {
         createkey.setEnabled(false);
         if (field == 0) {
@@ -272,4 +297,8 @@ public class CreateWindow implements ActionListener {
         efield.postActionEvent();
         creator.repaint();
     }//end creator updates
+
+    public JFrame getFrame() {
+        return this.creator;
+    }
 }

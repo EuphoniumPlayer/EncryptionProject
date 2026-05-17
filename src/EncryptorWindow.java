@@ -202,7 +202,7 @@ public class EncryptorWindow implements ActionListener {
         if (event.getSource() == loadFromFile) {
             try {
                 String[] keys = new String[2];
-                keys = command.readFile();
+                keys = command.readKeyFile();
                 keyfield.setText(keys[0]);
                 modulusfield.setText(keys[1]);
             } catch (FileException error) {
@@ -238,4 +238,8 @@ public class EncryptorWindow implements ActionListener {
             }
         }
     }//end encryptor updates
+
+    public JFrame getFrame() {
+        return this.encryptor;
+    }
 }

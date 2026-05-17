@@ -2,6 +2,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.*;
 import java.io.*;
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 public class FileIO {
     private static String getFilePath() throws FileException {
@@ -25,7 +26,7 @@ public class FileIO {
         }
     }
 
-    public String[] readFile() throws FileException {
+    public String[] readKeyFile() throws FileException {
         String k,m;
         String[] values = new String[2];
         try {
@@ -50,9 +51,9 @@ public class FileIO {
         } catch (Exception exception) {
             throw new FileException(exception);
         }
-    }
+    }//end readKeyFile
 
-    public void writeFile(BigInteger e, BigInteger d, BigInteger m) throws FileException {
+    public void writeKeyFile(BigInteger e, BigInteger d, BigInteger m) throws FileException {
         try {
             String path = getFilePath();
             if (!path.endsWith(".keys")) {
@@ -80,5 +81,46 @@ public class FileIO {
         } catch (IOException ioException) {
             throw new FileException(ioException);
         }
-    }//end writeFile
+    }//end writeKeyFile
+
+    public ArrayList<String> readFile(String path) throws FileException {
+        ArrayList<String> contents = new ArrayList<>();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(path));
+            while (true) {
+                String nextLine = reader.readLine();
+                if (nextLine == null) {
+                    break;
+                } else {
+                    contents.add(nextLine);
+                }
+            }
+            reader.close();
+            return contents;
+        } catch (Exception error) {
+            throw new FileException(error);
+        }
+    }//end readFile
+
+    public void writeFile(String path, ArrayList<String> contents) throws FileException {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+            for (String i : contents) {
+                writer.write(i);
+            }
+            writer.close();
+        } catch (Exception e) {
+            throw new FileException(e);
+        }
+    }
+
+    public void writeOneLineFile(String path, String line) throws FileException {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+            writer.write(line);
+            writer.close();
+        } catch (Exception e) {
+            throw new FileException(e);
+        }
+    }
 }
