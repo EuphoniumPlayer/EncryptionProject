@@ -68,7 +68,7 @@ public class Command {
         }
     }
 
-    public void writeFile(BigInteger e, BigInteger d, BigInteger m) throws FileException {
+    public void writeKeyFile(BigInteger e, BigInteger d, BigInteger m) throws FileException {
         try {
             fileIO.writeKeyFile(e, d, m);
         } catch (FileException error) {
@@ -106,9 +106,9 @@ public class Command {
             UIManager.put("nimbusDisabledText", Color.GRAY);
             UIManager.put("Button.disabled", new Color(125,125,125));
         }
-        SwingUtilities.updateComponentTreeUI(menu.getFrame());
-        menu.getFrame().revalidate();
-        menu.getFrame().repaint();
+        SwingUtilities.updateComponentTreeUI(menu.getMenuFrame());
+        menu.getMenuFrame().revalidate();
+        menu.getMenuFrame().repaint();
 
         SwingUtilities.updateComponentTreeUI(create.getFrame());
         create.getFrame().revalidate();

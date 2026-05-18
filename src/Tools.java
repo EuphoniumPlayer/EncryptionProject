@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class Tools {
     public static final Font mainfont = new Font("Arial",Font.PLAIN,20);
     public boolean isprime(BigInteger in) {
-        return in.isProbablePrime(20);
+        return in.isProbablePrime(64);
 //        if (in.compareTo(BigInteger.ONE) <= 0) return false;
 //
 //        if (in.equals(BigInteger.TWO)) return true;
@@ -57,9 +57,12 @@ public class Tools {
         return output.toString();
     }
 
-    public BigInteger randomPrime() {
+    public BigInteger randomPrime(int bitlength) {
+        BigInteger prime;
         SecureRandom random = new SecureRandom();
-        BigInteger prime = BigInteger.probablePrime(512,random);
+        do {
+            prime = BigInteger.probablePrime(bitlength, random);
+        } while (!isprime(prime));
         return prime;
     }
 }

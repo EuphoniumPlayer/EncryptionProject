@@ -77,7 +77,7 @@ public class Menu implements ActionListener {
         setBGButton();
     }
 
-    public JFrame getFrame() {
+    public JFrame getMenuFrame() {
         return this.menu;
     }
 

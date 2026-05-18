@@ -214,8 +214,7 @@ public class EncryptorWindow implements ActionListener {
     }//end actionPerformed
 
     public void encryptorUpdate() {
-        int key, mod;
-        BigInteger bigkey, bigmod;
+        BigInteger key, mod;
         if (keyfield.getText().isEmpty() || modulusfield.getText().isEmpty() || messagefield.getText().isEmpty()) {
             run.setEnabled(false);
             run.setToolTipText("Blank field(s)");
@@ -223,10 +222,8 @@ public class EncryptorWindow implements ActionListener {
         } else {
             if (mode == 1 || mode == 2) {
                 try {
-                    key = Integer.parseInt(keyfield.getText());
-                    bigkey = new BigInteger(String.valueOf(key));
-                    mod = Integer.parseInt(modulusfield.getText());
-                    bigmod = new BigInteger(String.valueOf(mod));
+                    key = new BigInteger(String.valueOf(keyfield.getText()));
+                    mod = new BigInteger(String.valueOf(modulusfield.getText()));
                     run.setEnabled(true);
                     run.setToolTipText(null);
                     encryptor.repaint();

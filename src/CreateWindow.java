@@ -77,7 +77,6 @@ public class CreateWindow implements ActionListener {
         createkey.addActionListener(this);
         createkey.setBounds(25, 400, 350, 40);
 
-        //fix
         random = new JButton(createDieIcon());
         random.setFocusable(false);
         random.addActionListener(this);
@@ -183,6 +182,7 @@ public class CreateWindow implements ActionListener {
                 }
             }//end try
         }//end checkp
+
         if (event.getSource() == qfield) {
             try {
                 qbigint = new BigInteger(qfield.getText());
@@ -202,6 +202,7 @@ public class CreateWindow implements ActionListener {
                 }
             }//end try
         }//end checkq
+
         if (event.getSource() == efield) {
             boolean inputsvalid = false;
             if (pfield.getText().equals("") || qfield.getText().equals("")) {
@@ -241,25 +242,36 @@ public class CreateWindow implements ActionListener {
                 }//end valid function
             }//end input check
         }//end checke
+
         if (event.getSource() == createkey) {
             dbigint = ebigint.modInverse(tn);
             publicout.setText("("+ebigint.toString()+", "+n.toString()+")");
             privateout.setText("("+dbigint.toString()+", "+n.toString()+")");
             savekeys.setEnabled(true);
         }//end createkey
+
         if (event.getSource() == back) {
             invisible();
             command.setMenuVisible(true);
         }//end back
+
         if (event.getSource() == savekeys) {
             try {
-                command.writeFile(ebigint,dbigint,n);
+                command.writeKeyFile(ebigint,dbigint,n);
             } catch (FileException error) {
                 if (!error.getMessage().equals("ignore")) {
                     command.displayFileError(error);
                 }
             }
         }//end savekeys
+
+        if (event.getSource() == random) {
+            this.pbigint = tools.randomPrime(512);
+            this.pfield.setText(this.pbigint.toString());
+
+            this.qbigint = tools.randomPrime(512);
+            this.qfield.setText(this.qbigint.toString());
+        }
     }//end actionPerformed
 
     private ImageIcon createDieIcon() {
