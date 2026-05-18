@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,12 +8,19 @@ import java.util.Arrays;
 public class Tools {
     public static final Font mainfont = new Font("Arial",Font.PLAIN,20);
     public boolean isprime(BigInteger in) {
-        if (in.compareTo(BigInteger.ONE) <= 0) return false;
-
-        for(BigInteger i = BigInteger.valueOf(2); i.compareTo(in.sqrt()) <= 0; i = i.add(BigInteger.ONE)) {
-            if (in.mod(i).equals(BigInteger.ZERO)) return false;
-        }
-        return true;
+        return in.isProbablePrime(20);
+//        if (in.compareTo(BigInteger.ONE) <= 0) return false;
+//
+//        if (in.equals(BigInteger.TWO)) return true;
+//
+//        if (in.mod(BigInteger.TWO).equals(BigInteger.ZERO)) return false;
+//
+//        BigInteger limit = in.sqrt();
+//
+//        for(BigInteger i = BigInteger.valueOf(3); i.compareTo(limit) <= 0; i = i.add(BigInteger.TWO)) {
+//            if (in.mod(i).equals(BigInteger.ZERO)) return false;
+//        }
+//        return true;
     }
     public boolean isgcd1(BigInteger a, BigInteger b) {
         while (!b.equals(BigInteger.ZERO)) {
@@ -37,7 +45,7 @@ public class Tools {
         StringBuilder output = new StringBuilder();
         String[] split = input.split(", ");
         ArrayList<String> strlist = new ArrayList<String>(Arrays.asList(split));
-        List<BigInteger> preoutlist = new ArrayList<>();
+        ArrayList<BigInteger> preoutlist = new ArrayList<>();
         for (String c : strlist) {
             preoutlist.add(BigInteger.valueOf(Integer.parseInt(c)));
         }
@@ -48,25 +56,10 @@ public class Tools {
         }
         return output.toString();
     }
-//    public String process(String message, BigInteger key, BigInteger modulus) {
-//        //TODO: fix
-//        if (message == null || message.isEmpty()) {
-//            return message;
-//        }
-//
-//        StringBuilder result = new StringBuilder(message.length());
-//
-//        for (int i=0;i<message.length();i++) {
-//            char c = message.charAt(i);
-//            int code = c & 0xFFFF;
-//
-//            BigInteger value = BigInteger.valueOf(code);
-//            BigInteger encoded = value.modPow(key, modulus);
-//
-//            int newCode = encoded.intValue();
-//
-//            result.append((char) newCode);
-//        }
-//        return result.toString();
-//    }
+
+    public BigInteger randomPrime() {
+        SecureRandom random = new SecureRandom();
+        BigInteger prime = BigInteger.probablePrime(512,random);
+        return prime;
+    }
 }
