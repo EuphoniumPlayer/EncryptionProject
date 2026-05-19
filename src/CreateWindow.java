@@ -271,6 +271,9 @@ public class CreateWindow implements ActionListener {
 
             this.qbigint = tools.randomPrime(512);
             this.qfield.setText(this.qbigint.toString());
+
+            this.ebigint = BigInteger.valueOf(65537);
+            this.efield.setText(this.ebigint.toString());
         }
     }//end actionPerformed
 

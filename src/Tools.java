@@ -32,22 +32,27 @@ public class Tools {
     }
 
     public String encrypt(BigInteger key, BigInteger mod, String input) {
-        List<BigInteger> output = new ArrayList<>();
+        ArrayList<BigInteger> encrypted = new ArrayList<>();
         for (char ch : input.toCharArray()) {
             BigInteger m = BigInteger.valueOf((int) ch);
             BigInteger c = m.modPow(key, mod);
-            output.add(c);
+            encrypted.add(c);
         }
+        StringBuilder output = new StringBuilder();
+        for (BigInteger i : encrypted) {
+            output.append(i.toString());
+            output.append(", ");
+        }
+        output.delete(output.length() - 2, output.length());
         return output.toString();
     }
 
     public String decrypt(BigInteger key, BigInteger mod, String input) {
         StringBuilder output = new StringBuilder();
-        String[] split = input.split(", ");
-        ArrayList<String> strlist = new ArrayList<String>(Arrays.asList(split));
+        String[] split = input.replaceAll("\\s+", " ").trim().split(", ");
         ArrayList<BigInteger> preoutlist = new ArrayList<>();
-        for (String c : strlist) {
-            preoutlist.add(BigInteger.valueOf(Integer.parseInt(c)));
+        for (String c : split) {
+            preoutlist.add(new BigInteger(c));
         }
         for (BigInteger num : preoutlist) {
             BigInteger decrypt = num.modPow(key, mod);

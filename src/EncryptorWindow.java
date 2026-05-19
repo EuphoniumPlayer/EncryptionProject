@@ -14,6 +14,7 @@ public class EncryptorWindow implements ActionListener {
     private JTextField[] encryptfields = new JTextField[2];
     private JTextArea[] encryptareas = new JTextArea[2];
     private int mode;
+    private JScrollPane inscroll, outscroll;
 
     private final Font mainfont = new Font("Arial",Font.PLAIN,20);
     private final Tools tools = new Tools();
@@ -54,6 +55,9 @@ public class EncryptorWindow implements ActionListener {
         messagefield.setBounds(25, 240, 400, 90);
         encryptareas[0] = messagefield;
 
+        inscroll = new JScrollPane(messagefield);
+        inscroll.setBounds(25,240,400,90);
+
         encryption = new JButton("Encrypt");
         encryption.setFont(mainfont);
         encryption.setFocusable(false);
@@ -93,6 +97,10 @@ public class EncryptorWindow implements ActionListener {
         output.setBounds(25, 535, 400, 90);
         encryptareas[1] = output;
 
+        outscroll = new JScrollPane(output);
+        outscroll.setBounds(25,535,400,90);
+
+
         back = new JButton("Back");
         back.setFont(mainfont);
         back.setFocusable(false);
@@ -115,13 +123,13 @@ public class EncryptorWindow implements ActionListener {
         encryptor.add(moduluslabel);
         encryptor.add(modulusfield);
         encryptor.add(messagelabel);
-        encryptor.add(messagefield);
+        encryptor.add(inscroll);
         encryptor.add(encryption);
         encryptor.add(decryption);
         encryptor.add(run);
         encryptor.add(modelabel);
         encryptor.add(outputlabel);
-        encryptor.add(output);
+        encryptor.add(outscroll);
         encryptor.add(back);
         encryptor.add(loadFromFile);
 
@@ -222,8 +230,8 @@ public class EncryptorWindow implements ActionListener {
         } else {
             if (mode == 1 || mode == 2) {
                 try {
-                    key = new BigInteger(String.valueOf(keyfield.getText()));
-                    mod = new BigInteger(String.valueOf(modulusfield.getText()));
+                    key = new BigInteger(keyfield.getText());
+                    mod = new BigInteger(modulusfield.getText());
                     run.setEnabled(true);
                     run.setToolTipText(null);
                     encryptor.repaint();
