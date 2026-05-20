@@ -192,8 +192,8 @@ public class EncryptorWindow implements ActionListener {
 //            output.setText(tools.process(message, key, mod));
             BigInteger key, mod;
             String input;
-            key = new BigInteger(String.valueOf(keyfield.getText()));
-            mod = new BigInteger(String.valueOf(modulusfield.getText()));
+            key = new BigInteger(keyfield.getText());
+            mod = new BigInteger(modulusfield.getText());
             input = messagefield.getText();
             if (mode == 1) {
                 //encrypt
@@ -222,16 +222,20 @@ public class EncryptorWindow implements ActionListener {
     }//end actionPerformed
 
     public void encryptorUpdate() {
-        BigInteger key, mod;
         if (keyfield.getText().isEmpty() || modulusfield.getText().isEmpty() || messagefield.getText().isEmpty()) {
             run.setEnabled(false);
             run.setToolTipText("Blank field(s)");
             encryptor.repaint();
         } else {
             if (mode == 1 || mode == 2) {
+                if (mode == 2 && !messagefield.getText().matches("[0-9,\\s]+")) {
+                    run.setEnabled(false);
+                    run.setToolTipText("Invalid decrypt input");
+                    return;
+                }
                 try {
-                    key = new BigInteger(keyfield.getText());
-                    mod = new BigInteger(modulusfield.getText());
+                    new BigInteger(keyfield.getText());
+                    new BigInteger(modulusfield.getText());
                     run.setEnabled(true);
                     run.setToolTipText(null);
                     encryptor.repaint();
