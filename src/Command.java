@@ -12,9 +12,15 @@ public class Command {
     private static FileIOError fileErrorWindow;
 
     public static boolean isDark;
-    private static final String themePath = "./settings/theme.setting";
+    private static String settingsFilePath;
 
     public static void main(String[] args) {
+        String folderPath = System.getProperty("user.home") + "\\AppData\\Local\\EncryptionProject\\settings\\";
+        settingsFilePath = folderPath + "\\settings.conf";
+
+        File folder = new File(folderPath);
+        folder.mkdirs();
+
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception err) {
@@ -126,10 +132,9 @@ public class Command {
     }//end applyTheme
 
     public void updateTheme() {
-        new File("./settings").mkdirs();
         isDark = !isDark();
         try {
-            fileIO.writeOneLineFile(themePath, isDark ? "dark" : "light");
+            fileIO.writeOneLineFile(settingsFilePath, isDark ? "dark" : "light");
         } catch (Exception e) {
             displayFileError(new FileException(e));
         }
@@ -138,7 +143,7 @@ public class Command {
 
     private static void loadTheme() throws FileException {
         try {
-            ArrayList<String> returned = fileIO.readFile(themePath);
+            ArrayList<String> returned = fileIO.readFile(settingsFilePath);
             if (returned.get(0).equals("light")) {
                 isDark = false;
             } else {
