@@ -4,14 +4,14 @@ import java.math.BigInteger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.image.BufferedImage;
 
 public class CreateWindow implements ActionListener {
     private JFrame creator;
     private JLabel plabel, qlabel, elabel, invalidplabel, invalidqlabel, invalidelabel, publicoutlabel, privateoutlabel, invalidcreate;
     private JTextField pfield, qfield, efield, publicout, privateout;
-    private JButton createkey, savekeys, back;
+    private JButton createkey, savekeys, back, random;
     private Font mainfont = new Font("Arial",Font.PLAIN,20);
-    private int p,q,e;
     private BigInteger pbigint, qbigint, ebigint, dbigint, n, tn;
     private JTextField[] fields = new JTextField[3];
 
@@ -75,7 +75,12 @@ public class CreateWindow implements ActionListener {
         createkey.setFont(mainfont);
         createkey.setEnabled(false);
         createkey.addActionListener(this);
-        createkey.setBounds(25, 400, 400, 40);
+        createkey.setBounds(25, 400, 350, 40);
+
+        random = new JButton(createDieIcon());
+        random.setFocusable(false);
+        random.addActionListener(this);
+        random.setBounds(385,400,40,40);
 
         publicoutlabel = new JLabel("Public key pair");
         publicoutlabel.setFocusable(false);
@@ -127,6 +132,7 @@ public class CreateWindow implements ActionListener {
         creator.add(efield);
         creator.add(invalidelabel);
         creator.add(createkey);
+        creator.add(random);
         creator.add(publicoutlabel);
         creator.add(publicout);
         creator.add(privateoutlabel);
@@ -159,8 +165,7 @@ public class CreateWindow implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == pfield) {
             try {
-                p = Integer.parseInt(pfield.getText());
-                pbigint = new BigInteger(String.valueOf(p));
+                pbigint = new BigInteger(pfield.getText());
                 if (!tools.isprime(pbigint)) {
                     invalidplabel.setText("Not prime");
                     creator.repaint();
@@ -177,10 +182,10 @@ public class CreateWindow implements ActionListener {
                 }
             }//end try
         }//end checkp
+
         if (event.getSource() == qfield) {
             try {
-                q = Integer.parseInt(qfield.getText());
-                qbigint = new BigInteger(String.valueOf(q));
+                qbigint = new BigInteger(qfield.getText());
                 if (!tools.isprime(qbigint)) {
                     invalidqlabel.setText("Not prime");
                     creator.repaint();
@@ -197,6 +202,7 @@ public class CreateWindow implements ActionListener {
                 }
             }//end try
         }//end checkq
+
         if (event.getSource() == efield) {
             boolean inputsvalid = false;
             if (pfield.getText().equals("") || qfield.getText().equals("")) {
@@ -204,12 +210,9 @@ public class CreateWindow implements ActionListener {
                 creator.repaint();
             } else {
                 try {
-                    p = Integer.parseInt(pfield.getText());
-                    pbigint = new BigInteger(String.valueOf(p));
-                    q = Integer.parseInt(qfield.getText());
-                    qbigint = new BigInteger(String.valueOf(q));
-                    e = Integer.parseInt(efield.getText());
-                    ebigint = new BigInteger(String.valueOf(e));
+                    pbigint = new BigInteger(pfield.getText());
+                    qbigint = new BigInteger(qfield.getText());
+                    ebigint = new BigInteger(efield.getText());
                     inputsvalid = true;
                 } catch (NumberFormatException error) {
                     if (efield.getText().equals("")) {
@@ -239,34 +242,65 @@ public class CreateWindow implements ActionListener {
                 }//end valid function
             }//end input check
         }//end checke
+
         if (event.getSource() == createkey) {
             dbigint = ebigint.modInverse(tn);
             publicout.setText("("+ebigint.toString()+", "+n.toString()+")");
             privateout.setText("("+dbigint.toString()+", "+n.toString()+")");
             savekeys.setEnabled(true);
         }//end createkey
+
         if (event.getSource() == back) {
             invisible();
             command.setMenuVisible(true);
         }//end back
+
         if (event.getSource() == savekeys) {
             try {
-                String es,ds,ms;
-                es = ebigint.toString();
-                ds = dbigint.toString();
-                ms = n.toString();
-                int e,d,m;
-                e = Integer.parseInt(es);
-                d = Integer.parseInt(ds);
-                m = Integer.parseInt(ms);
-                command.writeFile(e,d,m);
+                command.writeKeyFile(ebigint,dbigint,n);
             } catch (FileException error) {
                 if (!error.getMessage().equals("ignore")) {
                     command.displayFileError(error);
                 }
             }
         }//end savekeys
+
+        if (event.getSource() == random) {
+            this.pbigint = tools.randomPrime(512);
+            this.pfield.setText(this.pbigint.toString());
+
+            this.qbigint = tools.randomPrime(512);
+            this.qfield.setText(this.qbigint.toString());
+
+            this.ebigint = BigInteger.valueOf(65537);
+            this.efield.setText(this.ebigint.toString());
+        }
     }//end actionPerformed
+
+    private ImageIcon createDieIcon() {
+        BufferedImage img = new BufferedImage(24,24,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = img.createGraphics();
+        //g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        //Border
+        g.setColor(Color.BLACK);
+        g.fillRect(0,0,24,24);
+
+        //Background
+        g.setColor(Color.WHITE);
+        g.fillRect(1,1,22,22);
+
+        //Five dot pattern
+        g.setColor(Color.BLACK);
+        g.fillRect(3,3,6,6);//top left
+        g.fillRect(15,3,6,6);//top right
+        g.fillRect(9,9,6,6);//center
+        g.fillRect(3,15,6,6);//bottom left
+        g.fillRect(15,15,6,6);//bottom right
+
+        g.dispose();
+        return new ImageIcon(img);
+    }
 
     private void creatorFieldUpdate(int field) {
         createkey.setEnabled(false);
@@ -278,4 +312,8 @@ public class CreateWindow implements ActionListener {
         efield.postActionEvent();
         creator.repaint();
     }//end creator updates
+
+    public JFrame getFrame() {
+        return this.creator;
+    }
 }

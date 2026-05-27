@@ -80,4 +80,8 @@ public class FileIOError implements ActionListener {
             this.error.setText("");
         }
     }
+
+    public JFrame getFrame() {
+        return this.errorWindow;
+    }
 }

@@ -5,7 +5,7 @@ import javax.swing.*;
 public class Menu implements ActionListener {
     //menu stuff
     private JFrame menu;
-    private JButton create, encrypt;
+    private JButton create, encrypt, bgmode;
     private final Font menufont = new Font("Arial",Font.BOLD,15);
 
     //Command caller
@@ -15,7 +15,7 @@ public class Menu implements ActionListener {
         //menu
         menu = new JFrame("Menu");
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        menu.setSize(500, 200);
+        menu.setSize(500, 225);
         menu.setLayout(null);
 
         create = new JButton("Create a key");
@@ -30,10 +30,16 @@ public class Menu implements ActionListener {
         encrypt.addActionListener(this);
         encrypt.setFocusable(false);
 
+        bgmode = new JButton();
+        setBGButton();
+        bgmode.setFont(menufont);
+        bgmode.addActionListener(this);
+        bgmode.setFocusable(false);
+        bgmode.setBounds(360,150,125,35);
+
         menu.add(create);
         menu.add(encrypt);
-        menu.setVisible(true);
-
+        menu.add(bgmode);
     }//end constructor
 
     // actions
@@ -47,6 +53,9 @@ public class Menu implements ActionListener {
             this.invisible();
             command.setEncryptVisible(true);
         }//end encrypt button
+        if (event.getSource() == bgmode) {
+            command.updateTheme();
+        }
     }//end actions
 
     public void visible() {
@@ -55,4 +64,21 @@ public class Menu implements ActionListener {
     public void invisible() {
         menu.setVisible(false);
     }
+
+    private void setBGButton() {
+        if (command.isDark()) {
+            bgmode.setText("Light Mode");
+        } else {
+            bgmode.setText("Dark Mode");
+        }
+    }
+
+    public void updateBGButton() {
+        setBGButton();
+    }
+
+    public JFrame getMenuFrame() {
+        return this.menu;
+    }
+
 }//eop
