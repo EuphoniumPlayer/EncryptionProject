@@ -166,13 +166,23 @@ public class Command {
     }
 
     public static void restart() {
-        String java = System.getProperty("java.home") + "/bin/java";
-        String classpath = System.getProperty("java.class.path");
-        try {
-            new ProcessBuilder(java, "-cp",classpath, "Command").inheritIO().start();
-            System.exit(0);
-        } catch (Exception e) {
-            e.printStackTrace();
+        String origin = ProcessHandle.current().info().command().orElseThrow();
+        if (origin.endsWith(".exe") && !origin.contains("java")) {
+            try {
+                new ProcessBuilder(origin).inheritIO().start();
+                System.exit(0);
+            } catch (Exception e) {
+                displayFileError(e.getMessage());
+            }
+        } else {
+            String java = System.getProperty("java.home") + "/bin/java";
+            String classpath = System.getProperty("java.class.path");
+            try {
+                new ProcessBuilder(java, "-cp", classpath, "Command").inheritIO().start();
+                System.exit(0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
