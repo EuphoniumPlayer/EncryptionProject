@@ -102,6 +102,25 @@ public class FileIO {
         }
     }//end readFile
 
+    public String readOneLine(String path) throws FileException {
+        String output="";
+        if (path == null) {
+            try {
+                path = getFilePath();
+            } catch (FileException error) {
+                throw new FileException(error);
+            }
+        }
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(path));
+            output = reader.readLine();
+            reader.close();
+        } catch (Exception error) {
+            throw new FileException(error);
+        }
+        return output;
+    }//end readOneLine
+
     public void writeFile(String path, ArrayList<String> contents) throws FileException {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
@@ -111,6 +130,23 @@ public class FileIO {
             writer.close();
         } catch (Exception e) {
             throw new FileException(e);
+        }
+    }
+
+    public void writeFile(String path, String in) throws FileException {
+        if (path == null) {
+            try {
+                path = getFilePath();
+            } catch (FileException error) {
+                throw new FileException(error);
+            }
+        }
+        try {
+            FileWriter out = new FileWriter(path);
+            out.write(in);
+            out.close();
+        } catch (IOException error) {
+            throw new FileException(error);
         }
     }
 

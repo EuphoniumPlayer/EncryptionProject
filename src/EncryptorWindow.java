@@ -7,7 +7,7 @@ import javax.swing.event.DocumentListener;
 
 public class EncryptorWindow implements ActionListener {
     private JFrame encryptor;
-    private JButton run, encryption, decryption, back, loadFromFile;
+    private JButton run, encryption, decryption, back, loadFromFile, textin, textout;
     private JLabel keylabel, moduluslabel, messagelabel, outputlabel, modelabel;
     private JTextField keyfield, modulusfield;
     private JTextArea messagefield, output;
@@ -52,11 +52,13 @@ public class EncryptorWindow implements ActionListener {
         messagefield.setFont(mainfont);
         messagefield.setEditable(true);
         messagefield.setLineWrap(true);
-        messagefield.setBounds(25, 240, 400, 90);
+        //messagefield.setBounds(25, 240, 400, 90);
         encryptareas[0] = messagefield;
 
         inscroll = new JScrollPane(messagefield);
         inscroll.setBounds(25,240,400,90);
+
+
 
         encryption = new JButton("Encrypt");
         encryption.setFont(mainfont);
@@ -94,12 +96,11 @@ public class EncryptorWindow implements ActionListener {
         output.setFocusable(true);
         output.setEditable(false);
         output.setLineWrap(true);
-        output.setBounds(25, 535, 400, 90);
+        //output.setBounds(25, 535, 400, 90);
         encryptareas[1] = output;
 
         outscroll = new JScrollPane(output);
         outscroll.setBounds(25,535,400,90);
-
 
         back = new JButton("Back");
         back.setFont(mainfont);

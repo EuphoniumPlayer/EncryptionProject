@@ -90,6 +90,22 @@ public class Command {
         }
     }
 
+    public String readOneLine(String path) throws FileException {
+        try {
+            return fileIO.readOneLine(path);
+        } catch (Exception error) {
+            throw new FileException(error);
+        }
+    }
+
+    public void writeFile(String path, String in) throws FileException {
+        try {
+            fileIO.writeFile(path, in);
+        } catch (Exception e) {
+            throw new FileException(e);
+        }
+    }
+
     private static void applyTheme() {
         if (isDark) {
             UIManager.put("nimbusBase", new Color(18,18,18));
