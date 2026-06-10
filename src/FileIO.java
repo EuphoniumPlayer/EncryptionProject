@@ -26,6 +26,25 @@ public class FileIO {
         }
     }
 
+    private static String getFilePath(String description, String extension) throws FileException {
+       JFileChooser chooser = new JFileChooser();
+       chooser.setFileFilter(new FileNameExtensionFilter(description,extension));
+
+       int approved = chooser.showOpenDialog(null);
+       if (approved == JFileChooser.APPROVE_OPTION) {
+           try {
+               File file = chooser.getSelectedFile();
+               return file.getAbsolutePath();
+           } catch (Exception e) {
+               throw new FileException(e);
+           }
+       } else if (approved != JFileChooser.CANCEL_OPTION) {
+           throw new FileException(FileException.FILE_EXPLORER_ERROR);
+       } else {
+           throw new FileException("ignore");
+       }
+    }
+
     public String[] readKeyFile() throws FileException {
         String k,m;
         String[] values = new String[2];

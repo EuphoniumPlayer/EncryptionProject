@@ -7,7 +7,7 @@ import javax.swing.event.DocumentListener;
 
 public class EncryptorWindow implements ActionListener {
     private JFrame encryptor;
-    private JButton run, encryption, decryption, back, loadFromFile, textin, textout;
+    private JButton run, encryption, decryption, back, loadFromFile, textin, textout, clearin, clearout;
     private JLabel keylabel, moduluslabel, messagelabel, outputlabel, modelabel;
     private JTextField keyfield, modulusfield;
     private JTextArea messagefield, output;
@@ -24,7 +24,7 @@ public class EncryptorWindow implements ActionListener {
         keylabel = new JLabel("Key");
         keylabel.setFont(mainfont);
         keylabel.setFocusable(false);
-        keylabel.setBounds(25, 25, 400, 20);
+        keylabel.setBounds(25, 25, 400, 25);
 
         keyfield = new JTextField();
         keyfield.setFont(mainfont);
@@ -35,7 +35,7 @@ public class EncryptorWindow implements ActionListener {
         moduluslabel = new JLabel("Modulus");
         moduluslabel.setFont(mainfont);
         moduluslabel.setFocusable(false);
-        moduluslabel.setBounds(25, 115, 400, 20);
+        moduluslabel.setBounds(25, 115, 400, 25);
 
         modulusfield = new JTextField();
         modulusfield.setFont(mainfont);
@@ -46,7 +46,7 @@ public class EncryptorWindow implements ActionListener {
         messagelabel = new JLabel("Message");
         messagelabel.setFont(mainfont);
         messagelabel.setFocusable(false);
-        messagelabel.setBounds(25, 205, 400, 20);
+        messagelabel.setBounds(25, 205, 400, 25);
 
         messagefield = new JTextArea();
         messagefield.setFont(mainfont);
@@ -58,7 +58,17 @@ public class EncryptorWindow implements ActionListener {
         inscroll = new JScrollPane(messagefield);
         inscroll.setBounds(25,240,400,90);
 
+        textin = new JButton("Load");
+        textin.setFont(mainfont);
+        textin.setFocusable(false);
+        textin.addActionListener(this);
+        textin.setBounds(267,205,80,35);
 
+        clearin = new JButton("Clear");
+        clearin.setFont(mainfont);
+        clearin.setFocusable(false);
+        clearin.addActionListener(this);
+        clearin.setBounds(345,205,80,35);
 
         encryption = new JButton("Encrypt");
         encryption.setFont(mainfont);
@@ -89,7 +99,7 @@ public class EncryptorWindow implements ActionListener {
         outputlabel = new JLabel("Output");
         outputlabel.setFont(mainfont);
         outputlabel.setFocusable(false);
-        outputlabel.setBounds(25, 500, 400, 20);
+        outputlabel.setBounds(25, 500, 400, 25);
 
         output = new JTextArea();
         output.setFont(mainfont);
@@ -124,6 +134,8 @@ public class EncryptorWindow implements ActionListener {
         encryptor.add(moduluslabel);
         encryptor.add(modulusfield);
         encryptor.add(messagelabel);
+        encryptor.add(textin);
+        encryptor.add(clearin);
         encryptor.add(inscroll);
         encryptor.add(encryption);
         encryptor.add(decryption);
@@ -220,6 +232,17 @@ public class EncryptorWindow implements ActionListener {
                 }
             }
         }//end loadFromFile
+        if (event.getSource() == textin) {
+            try {
+                String text = command.readOneLine(null);
+                messagefield.setText(text);
+            } catch (FileException e) {
+                command.displayFileError(e);
+            }
+        }
+        if (event.getSource() == clearin) {
+            messagefield.setText("");
+        }
     }//end actionPerformed
 
     public void encryptorUpdate() {
