@@ -7,7 +7,7 @@ import javax.swing.event.DocumentListener;
 
 public class EncryptorWindow implements ActionListener {
     private JFrame encryptor;
-    private JButton run, encryption, decryption, back, loadFromFile, textin, textout, clearin, clearout;
+    private JButton run, encryption, decryption, back, loadFromFile, textin, textout, clearin, clearout, clearkey, clearmod;
     private JLabel keylabel, moduluslabel, messagelabel, outputlabel, modelabel;
     private JTextField keyfield, modulusfield;
     private JTextArea messagefield, output;
@@ -101,6 +101,18 @@ public class EncryptorWindow implements ActionListener {
         outputlabel.setFocusable(false);
         outputlabel.setBounds(25, 500, 400, 25);
 
+        textout = new JButton("Save");
+        textout.setFont(mainfont);
+        textout.setFocusable(false);
+        textout.addActionListener(this);
+        textout.setBounds(267,500,80,35);
+
+        clearout = new JButton("Clear");
+        clearout.setFont(mainfont);
+        clearout.setFocusable(false);
+        clearout.addActionListener(this);
+        clearout.setBounds(345,500,80,35);
+
         output = new JTextArea();
         output.setFont(mainfont);
         output.setFocusable(true);
@@ -142,6 +154,8 @@ public class EncryptorWindow implements ActionListener {
         encryptor.add(run);
         encryptor.add(modelabel);
         encryptor.add(outputlabel);
+        encryptor.add(textout);
+        encryptor.add(clearout);
         encryptor.add(outscroll);
         encryptor.add(back);
         encryptor.add(loadFromFile);
@@ -234,7 +248,7 @@ public class EncryptorWindow implements ActionListener {
         }//end loadFromFile
         if (event.getSource() == textin) {
             try {
-                String text = command.readOneLine(null);
+                String text = command.readOneLine(null, "Encrypted Message File (*.emf)", "emf");
                 messagefield.setText(text);
             } catch (FileException e) {
                 command.displayFileError(e);
@@ -242,6 +256,14 @@ public class EncryptorWindow implements ActionListener {
         }
         if (event.getSource() == clearin) {
             messagefield.setText("");
+        }
+        if (event.getSource() == textout) {
+            try {
+                String text = output.getText();
+                command.writeOneLineFile(null, text, "Encrypted Message File (*.emf)", "emf");
+            } catch (FileException e) {
+                command.displayFileError(e);
+            }
         }
     }//end actionPerformed
 

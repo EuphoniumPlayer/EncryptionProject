@@ -121,11 +121,11 @@ public class FileIO {
         }
     }//end readFile
 
-    public String readOneLine(String path) throws FileException {
+    public String readOneLine(String path, String description, String extension) throws FileException {
         String output="";
         if (path == null) {
             try {
-                path = getFilePath();
+                path = getFilePath(description, extension);
             } catch (FileException error) {
                 throw new FileException(error);
             }
@@ -152,29 +152,27 @@ public class FileIO {
         }
     }
 
-    public void writeFile(String path, String in) throws FileException {
-        if (path == null) {
-            try {
-                path = getFilePath();
-            } catch (FileException error) {
-                throw new FileException(error);
-            }
-        }
-        try {
-            FileWriter out = new FileWriter(path);
-            out.write(in);
-            out.close();
-        } catch (IOException error) {
-            throw new FileException(error);
-        }
-    }
-
     public void writeOneLineFile(String path, String line) throws FileException {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
             writer.write(line);
             writer.close();
         } catch (Exception e) {
+            throw new FileException(e);
+        }
+    }
+
+    public void writeOneLineFile(String path, String line, String description, String extension) throws FileException {
+        if (path == null) {
+            try {
+                path = getFilePath(description, extension);
+            } catch (FileException e) {
+                throw new FileException(e);
+            }
+        }
+        try {
+            writeOneLineFile(path,line);
+        } catch (FileException e) {
             throw new FileException(e);
         }
     }
