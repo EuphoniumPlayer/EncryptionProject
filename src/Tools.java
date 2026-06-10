@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Tools {
-    public static final Font mainfont = new Font("Arial",Font.PLAIN,20);
+    public final Font mainfont = new Font("Arial",Font.PLAIN,20);
     public boolean isprime(BigInteger in) {
         return in.isProbablePrime(64);
 //        if (in.compareTo(BigInteger.ONE) <= 0) return false;

@@ -10,15 +10,19 @@ public class Command {
     private static EncryptorWindow encryptor;
     private static FileIO fileIO = new FileIO();
     private static FileIOError fileErrorWindow;
+    private static SettingsMenu settingsmenu;
 
     public static boolean isDark;
-    private static String settingsFilePath;
+    private static String themeSettingsFilePath;
+    private static String settingsFolderPath;
+
+    private static int bitlengthvalue;
 
     public static void main(String[] args) {
-        String folderPath = System.getProperty("user.home") + "\\AppData\\Local\\EncryptionProject\\settings\\";
-        settingsFilePath = folderPath + "\\settings.conf";
+        settingsFolderPath = System.getProperty("user.home") + "\\AppData\\Local\\EncryptionProject\\settings\\";
+        themeSettingsFilePath = settingsFolderPath + "\\settings.conf";
 
-        File folder = new File(folderPath);
+        File folder = new File(settingsFolderPath);
         folder.mkdirs();
 
         try {
@@ -37,10 +41,11 @@ public class Command {
         create = new CreateWindow();
         encryptor = new EncryptorWindow();
         fileErrorWindow = new FileIOError();
+        settingsmenu = new SettingsMenu();
 
         applyTheme();
         menu.visible();
-    }
+    }//end main
 
     public void setMenuVisible(boolean state) {
         if (state) {
@@ -64,6 +69,10 @@ public class Command {
         } else {
             encryptor.invisible();
         }
+    }
+
+    public void setSettingsMenuVisible(boolean state) {
+        settingsmenu.setVisible(state);
     }
 
     public String[] readKeyFile() throws FileException {
@@ -128,13 +137,17 @@ public class Command {
         fileErrorWindow.getFrame().revalidate();
         fileErrorWindow.getFrame().repaint();
 
+        SwingUtilities.updateComponentTreeUI(settingsmenu.getFrame());
+        settingsmenu.getFrame().revalidate();
+        settingsmenu.getFrame().repaint();
+
         menu.updateBGButton();
     }//end applyTheme
 
     public void updateTheme() {
         isDark = !isDark();
         try {
-            fileIO.writeOneLineFile(settingsFilePath, isDark ? "dark" : "light");
+            fileIO.writeOneLineFile(themeSettingsFilePath, isDark ? "dark" : "light");
         } catch (Exception e) {
             displayFileError(new FileException(e));
         }
@@ -143,7 +156,7 @@ public class Command {
 
     private static void loadTheme() throws FileException {
         try {
-            ArrayList<String> returned = fileIO.readFile(settingsFilePath);
+            ArrayList<String> returned = fileIO.readFile(themeSettingsFilePath);
             if (returned.get(0).equals("light")) {
                 isDark = false;
             } else {
@@ -154,8 +167,20 @@ public class Command {
         }
     }
 
+    private static void readBitLength() throws FileException {
+        try {
+
+        } catch (Exception e) {
+            throw new FileException(e);
+        }
+    }
+
     public boolean isDark() {
         return this.isDark;
+    }
+
+    public int getBitLength() {
+        return bitlengthvalue;
     }
 
     public void displayFileError(FileException error) {
@@ -184,5 +209,5 @@ public class Command {
                 e.printStackTrace();
             }
         }
-    }
+    }//end of restart
 }
