@@ -90,6 +90,22 @@ public class Command {
         }
     }
 
+    public String readOneLine(String path, String description, String extension) throws FileException {
+        try {
+            return fileIO.readOneLine(path, description, extension);
+        } catch (Exception error) {
+            throw new FileException(error);
+        }
+    }
+
+    public void writeOneLineFile(String path, String in, String description, String extension) throws FileException {
+        try {
+            fileIO.writeOneLineFile(path, in, description, extension);
+        } catch (Exception e) {
+            throw new FileException(e);
+        }
+    }
+
     private static void applyTheme() {
         if (isDark) {
             UIManager.put("nimbusBase", new Color(18,18,18));
@@ -159,7 +175,7 @@ public class Command {
     }
 
     public void displayFileError(FileException error) {
-        fileErrorWindow.displayError(error);
+        if (!error.getMessage().equals("ignore")) fileErrorWindow.displayError(error);
     }
     public static void displayFileError(String error) {
         fileErrorWindow.displayError(error);

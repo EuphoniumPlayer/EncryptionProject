@@ -26,6 +26,25 @@ public class FileIO {
         }
     }
 
+    private static String getFilePath(String description, String extension) throws FileException {
+       JFileChooser chooser = new JFileChooser();
+       chooser.setFileFilter(new FileNameExtensionFilter(description,extension));
+
+       int approved = chooser.showOpenDialog(null);
+       if (approved == JFileChooser.APPROVE_OPTION) {
+           try {
+               File file = chooser.getSelectedFile();
+               return file.getAbsolutePath();
+           } catch (Exception e) {
+               throw new FileException(e);
+           }
+       } else if (approved != JFileChooser.CANCEL_OPTION) {
+           throw new FileException(FileException.FILE_EXPLORER_ERROR);
+       } else {
+           throw new FileException("ignore");
+       }
+    }
+
     public String[] readKeyFile() throws FileException {
         String k,m;
         String[] values = new String[2];
@@ -102,6 +121,25 @@ public class FileIO {
         }
     }//end readFile
 
+    public String readOneLine(String path, String description, String extension) throws FileException {
+        String output="";
+        if (path == null) {
+            try {
+                path = getFilePath(description, extension);
+            } catch (FileException error) {
+                throw new FileException(error);
+            }
+        }
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(path));
+            output = reader.readLine();
+            reader.close();
+        } catch (Exception error) {
+            throw new FileException(error);
+        }
+        return output;
+    }//end readOneLine
+
     public void writeFile(String path, ArrayList<String> contents) throws FileException {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
@@ -120,6 +158,24 @@ public class FileIO {
             writer.write(line);
             writer.close();
         } catch (Exception e) {
+            throw new FileException(e);
+        }
+    }
+
+    public void writeOneLineFile(String path, String line, String description, String extension) throws FileException {
+        if (path == null) {
+            try {
+                path = getFilePath(description, extension);
+                if (!path.endsWith("."+extension)) {
+                    path += "." + extension;
+                }
+            } catch (FileException e) {
+                throw new FileException(e);
+            }
+        }
+        try {
+            writeOneLineFile(path,line);
+        } catch (FileException e) {
             throw new FileException(e);
         }
     }

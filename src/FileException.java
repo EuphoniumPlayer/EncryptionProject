@@ -21,7 +21,7 @@ public class FileException extends Exception {
             this.errorMessage = "Directory not found";
         }
         if (code == 3) {
-            this.errorMessage = "File Explorer error";
+            this.errorMessage = "Unknown File Explorer error";
         }
     }
 
