@@ -7,9 +7,10 @@ Creates asymmetric encryption keys that can be used in the program to encrypt an
 * Save keys to files
 * Load a key from a file
 * Randomly generate numbers for keys
-
-**Coming soon**
 * Save and load encrypted messages from files
+
+Coming soon:
+* Settings menu
 
 # How to use
 ## **Creating Keys**
