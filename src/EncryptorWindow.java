@@ -7,7 +7,7 @@ import javax.swing.event.DocumentListener;
 
 public class EncryptorWindow implements ActionListener {
     private JFrame encryptor;
-    private JButton run, encryption, decryption, back, loadFromFile, textin, textout, clearin, clearout, clearkey, clearmod;
+    private JButton run, encryption, decryption, back, loadFromFile, loadMessage, saveMessage, clearin, clearout, clearkey, clearmod;
     private JLabel keylabel, moduluslabel, messagelabel, outputlabel, modelabel;
     private JTextField keyfield, modulusfield;
     private JTextArea messagefield, output;
@@ -16,7 +16,7 @@ public class EncryptorWindow implements ActionListener {
     private int mode;
     private JScrollPane inscroll, outscroll;
 
-    private final Font mainfont = new Font("Arial",Font.PLAIN,20);
+    private final Font mainfont = new Font("Arial", Font.PLAIN, 20);
     private final Tools tools = new Tools();
     private static final Command command = new Command();
 
@@ -56,19 +56,19 @@ public class EncryptorWindow implements ActionListener {
         encryptareas[0] = messagefield;
 
         inscroll = new JScrollPane(messagefield);
-        inscroll.setBounds(25,240,400,90);
+        inscroll.setBounds(25, 240, 400, 90);
 
-        textin = new JButton("Load");
-        textin.setFont(mainfont);
-        textin.setFocusable(false);
-        textin.addActionListener(this);
-        textin.setBounds(267,205,80,35);
+        loadMessage = new JButton("Load");
+        loadMessage.setFont(mainfont);
+        loadMessage.setFocusable(false);
+        loadMessage.addActionListener(this);
+        loadMessage.setBounds(267, 205, 80, 35);
 
         clearin = new JButton("Clear");
         clearin.setFont(mainfont);
         clearin.setFocusable(false);
         clearin.addActionListener(this);
-        clearin.setBounds(345,205,80,35);
+        clearin.setBounds(345, 205, 80, 35);
 
         encryption = new JButton("Encrypt");
         encryption.setFont(mainfont);
@@ -101,17 +101,19 @@ public class EncryptorWindow implements ActionListener {
         outputlabel.setFocusable(false);
         outputlabel.setBounds(25, 500, 400, 25);
 
-        textout = new JButton("Save");
-        textout.setFont(mainfont);
-        textout.setFocusable(false);
-        textout.addActionListener(this);
-        textout.setBounds(267,500,80,35);
+        saveMessage = new JButton("Save");
+        saveMessage.setFont(mainfont);
+        saveMessage.setFocusable(false);
+        saveMessage.addActionListener(this);
+        saveMessage.setEnabled(false);
+        saveMessage.setToolTipText("There's nothing to save!");
+        saveMessage.setBounds(267, 500, 80, 35);
 
         clearout = new JButton("Clear");
         clearout.setFont(mainfont);
         clearout.setFocusable(false);
         clearout.addActionListener(this);
-        clearout.setBounds(345,500,80,35);
+        clearout.setBounds(345, 500, 80, 35);
 
         output = new JTextArea();
         output.setFont(mainfont);
@@ -122,7 +124,7 @@ public class EncryptorWindow implements ActionListener {
         encryptareas[1] = output;
 
         outscroll = new JScrollPane(output);
-        outscroll.setBounds(25,535,400,90);
+        outscroll.setBounds(25, 535, 400, 90);
 
         back = new JButton("Back");
         back.setFont(mainfont);
@@ -146,7 +148,7 @@ public class EncryptorWindow implements ActionListener {
         encryptor.add(moduluslabel);
         encryptor.add(modulusfield);
         encryptor.add(messagelabel);
-        encryptor.add(textin);
+        encryptor.add(loadMessage);
         encryptor.add(clearin);
         encryptor.add(inscroll);
         encryptor.add(encryption);
@@ -154,7 +156,7 @@ public class EncryptorWindow implements ActionListener {
         encryptor.add(run);
         encryptor.add(modelabel);
         encryptor.add(outputlabel);
-        encryptor.add(textout);
+        encryptor.add(saveMessage);
         encryptor.add(clearout);
         encryptor.add(outscroll);
         encryptor.add(back);
@@ -163,30 +165,64 @@ public class EncryptorWindow implements ActionListener {
 //        back.setBounds(25,655,400,30);
 //        encryptor.add(back);
 
-        for (int i=0;i<2;i++) {
+        for (int i = 0; i < 2; i++) {
             encryptfields[i].getDocument().addDocumentListener(new DocumentListener() {
                 @Override
-                public void changedUpdate(DocumentEvent e) {encryptorUpdate();}
+                public void changedUpdate(DocumentEvent e) {
+                    encryptorUpdate();
+                }
+
                 @Override
-                public void removeUpdate(DocumentEvent e) {encryptorUpdate();}
+                public void removeUpdate(DocumentEvent e) {
+                    encryptorUpdate();
+                }
+
                 @Override
-                public void insertUpdate(DocumentEvent e) {encryptorUpdate();}
+                public void insertUpdate(DocumentEvent e) {
+                    encryptorUpdate();
+                }
             });
         }
 
         messagefield.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void changedUpdate(DocumentEvent e) {encryptorUpdate();}
+            public void changedUpdate(DocumentEvent e) {
+                encryptorUpdate();
+            }
+
             @Override
-            public void removeUpdate(DocumentEvent e) {encryptorUpdate();}
+            public void removeUpdate(DocumentEvent e) {
+                encryptorUpdate();
+            }
+
             @Override
-            public void insertUpdate(DocumentEvent e) {encryptorUpdate();}
+            public void insertUpdate(DocumentEvent e) {
+                encryptorUpdate();
+            }
+        });
+
+        output.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                outputUpdate();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                outputUpdate();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                outputUpdate();
+            }
         });
     }
 
     public void visible() {
         encryptor.setVisible(true);
     }
+
     public void invisible() {
         encryptor.setVisible(false);
     }
@@ -210,13 +246,6 @@ public class EncryptorWindow implements ActionListener {
             encryptor.repaint();
         }
         if (event.getSource() == run) {
-//            //TODO: update run
-//            BigInteger key, mod;
-//            String message;
-//            key = new BigInteger(String.valueOf(keyfield.getText()));
-//            mod = new BigInteger(String.valueOf(modulusfield.getText()));
-//            message = messagefield.getText();
-//            output.setText(tools.process(message, key, mod));
             BigInteger key, mod;
             String input;
             key = new BigInteger(keyfield.getText());
@@ -229,6 +258,8 @@ public class EncryptorWindow implements ActionListener {
                 //decrypt
                 output.setText(tools.decrypt(key, mod, input));
             }
+            saveMessage.setEnabled(true);
+            saveMessage.setToolTipText("");
         }
         if (event.getSource() == back) {
             invisible();
@@ -246,7 +277,7 @@ public class EncryptorWindow implements ActionListener {
                 }
             }
         }//end loadFromFile
-        if (event.getSource() == textin) {
+        if (event.getSource() == loadMessage) {
             try {
                 String text = command.readOneLine(null, "Encrypted Message File (*.emf)", "emf");
                 messagefield.setText(text);
@@ -257,7 +288,7 @@ public class EncryptorWindow implements ActionListener {
         if (event.getSource() == clearin) {
             messagefield.setText("");
         }
-        if (event.getSource() == textout) {
+        if (event.getSource() == saveMessage) {
             try {
                 String text = output.getText();
                 command.writeOneLineFile(null, text, "Encrypted Message File (*.emf)", "emf");
@@ -265,9 +296,14 @@ public class EncryptorWindow implements ActionListener {
                 command.displayFileError(e);
             }
         }
+        if (event.getSource() == clearout) {
+            output.setText("");
+            saveMessage.setEnabled(false);
+            saveMessage.setToolTipText("There's nothing to save!");
+        }
     }//end actionPerformed
 
-    public void encryptorUpdate() {
+    private void encryptorUpdate() {
         if (keyfield.getText().isEmpty() || modulusfield.getText().isEmpty() || messagefield.getText().isEmpty()) {
             run.setEnabled(false);
             run.setToolTipText("Blank field(s)");
@@ -293,6 +329,16 @@ public class EncryptorWindow implements ActionListener {
             }
         }
     }//end encryptor updates
+
+    private void outputUpdate() {
+        if (output.getText().isEmpty()) {
+            saveMessage.setEnabled(false);
+            saveMessage.setToolTipText("There's nothing to save!");
+        } else {
+            saveMessage.setEnabled(true);
+            saveMessage.setToolTipText(null);
+        }
+    }
 
     public JFrame getFrame() {
         return this.encryptor;

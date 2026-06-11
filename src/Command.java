@@ -175,7 +175,7 @@ public class Command {
     }
 
     public void displayFileError(FileException error) {
-        if (error.getMessage().equals("ignore")) fileErrorWindow.displayError(error);
+        if (!error.getMessage().equals("ignore")) fileErrorWindow.displayError(error);
     }
     public static void displayFileError(String error) {
         fileErrorWindow.displayError(error);

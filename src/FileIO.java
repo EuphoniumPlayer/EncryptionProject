@@ -166,6 +166,9 @@ public class FileIO {
         if (path == null) {
             try {
                 path = getFilePath(description, extension);
+                if (!path.endsWith("."+extension)) {
+                    path += "." + extension;
+                }
             } catch (FileException e) {
                 throw new FileException(e);
             }
