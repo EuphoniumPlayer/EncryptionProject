@@ -6,8 +6,9 @@ import javax.swing.event.DocumentListener;
 public class SettingsMenu implements ActionListener {
     private JFrame frame;
     private JButton save, mode, cancel;
-    private JTextField bitlength;
-    private JLabel bitlabel;
+    private JTextField bitlength, publicPrefix, privatePrefix;
+    private JLabel bitlabel, pubPreLabel, privPreLabel;
+    private JTextField[] textFields;
 
     private static final Command command = new Command();
     private final Tools tools = new Tools();
@@ -17,6 +18,8 @@ public class SettingsMenu implements ActionListener {
         frame.setLayout(null);
         frame.setSize(500,500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        textFields = new JTextField[3];
 
         save = new JButton("Save");
         save.addActionListener(this);
@@ -28,12 +31,21 @@ public class SettingsMenu implements ActionListener {
 
         bitlength = new JTextField();
         bitlength.setFont(tools.mainfont);
-        bitlength.setEditable(true);
         bitlength.setText(String.valueOf(command.getBitLength()));
         bitlength.setBounds(25,65,100,30);
+        textFields[0] = bitlength;
+
+        pubPreLabel = new JLabel("Key 1 prefix:");
+        pubPreLabel.setFont(tools.mainfont);
+        pubPreLabel.setFocusable(false);
+        pubPreLabel.setBounds(25, 110, 400, 30);
+
+        publicPrefix = new JTextField();
+        publicPrefix.setFont(tools.mainfont);
 
         frame.add(bitlabel);
         frame.add(bitlength);
+        frame.add(pubPreLabel);
         frame.setVisible(true);
     }//end of constructor
 

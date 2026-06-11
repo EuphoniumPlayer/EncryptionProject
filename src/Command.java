@@ -15,15 +15,18 @@ public class Command {
     public static boolean isDark;
     private static String themeSettingsFilePath;
     private static String settingsFolderPath;
+    private static String settingsPath;
 
     private static int bitlengthvalue;
 
     public static void main(String[] args) {
         settingsFolderPath = System.getProperty("user.home") + "\\AppData\\Local\\EncryptionProject\\settings\\";
-        themeSettingsFilePath = settingsFolderPath + "\\settings.conf";
+        themeSettingsFilePath = settingsFolderPath + "\\theme.conf";
 
         File folder = new File(settingsFolderPath);
         folder.mkdirs();
+
+        settingsPath = settingsFolderPath += "\\settings.conf";
 
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -36,6 +39,15 @@ public class Command {
         } catch (Exception e) {
             isDark = true;
         }
+
+//        try{
+//            loadSettings();
+//        } catch (FileException e) {
+//            bitlengthvalue = 512;
+//            publicPrefix = "public-";
+//            privatePrefix = "private-";
+//            isDark = true;
+//        }
 
         menu = new Menu();
         create = new CreateWindow();
@@ -121,25 +133,26 @@ public class Command {
             UIManager.put("nimbusDisabledText", Color.GRAY);
             UIManager.put("Button.disabled", new Color(125,125,125));
         }
-        SwingUtilities.updateComponentTreeUI(menu.getMenuFrame());
-        menu.getMenuFrame().revalidate();
-        menu.getMenuFrame().repaint();
+        //old method, had caching issues
+//        SwingUtilities.updateComponentTreeUI(menu.getMenuFrame());
+//        menu.getMenuFrame().revalidate();
+//        menu.getMenuFrame().repaint();
+//
+//        SwingUtilities.updateComponentTreeUI(create.getFrame());
+//        create.getFrame().revalidate();
+//        create.getFrame().repaint();
+//
+//        SwingUtilities.updateComponentTreeUI(encryptor.getFrame());
+//        encryptor.getFrame().revalidate();
+//        encryptor.getFrame().repaint();
+//
+//        SwingUtilities.updateComponentTreeUI(fileErrorWindow.getFrame());
+//        fileErrorWindow.getFrame().revalidate();
+//        fileErrorWindow.getFrame().repaint();
 
-        SwingUtilities.updateComponentTreeUI(create.getFrame());
-        create.getFrame().revalidate();
-        create.getFrame().repaint();
-
-        SwingUtilities.updateComponentTreeUI(encryptor.getFrame());
-        encryptor.getFrame().revalidate();
-        encryptor.getFrame().repaint();
-
-        SwingUtilities.updateComponentTreeUI(fileErrorWindow.getFrame());
-        fileErrorWindow.getFrame().revalidate();
-        fileErrorWindow.getFrame().repaint();
-
-        SwingUtilities.updateComponentTreeUI(settingsmenu.getFrame());
-        settingsmenu.getFrame().revalidate();
-        settingsmenu.getFrame().repaint();
+        //SwingUtilities.updateComponentTreeUI(settingsmenu.getFrame());
+        //settingsmenu.getFrame().revalidate();
+        //settingsmenu.getFrame().repaint();
 
         menu.updateBGButton();
     }//end applyTheme
