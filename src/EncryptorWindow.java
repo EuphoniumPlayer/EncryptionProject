@@ -335,8 +335,13 @@ public class EncryptorWindow implements ActionListener {
             saveMessage.setEnabled(false);
             saveMessage.setToolTipText("There's nothing to save!");
         } else {
-            saveMessage.setEnabled(true);
-            saveMessage.setToolTipText(null);
+            if (output.getText().matches("[0-9,\\s]+")) {
+                saveMessage.setEnabled(true);
+                saveMessage.setToolTipText(null);
+            } else {
+                saveMessage.setEnabled(false);
+                saveMessage.setToolTipText("Text is not encrypted");
+            }
         }
     }
 
