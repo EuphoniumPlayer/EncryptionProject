@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class Command {
+    //Declaration of the various objects
     private static Menu menu;
     private static CreateWindow create;
     private static EncryptorWindow encryptor;
@@ -12,77 +13,78 @@ public class Command {
     private static FileIOError fileErrorWindow;
     private static SettingsMenu settingsmenu;
 
-    public static boolean isDark;
+    //Declaration of the various setting related variables
+    private static boolean isDark;
     private static String themeSettingsFilePath;
     private static String settingsFolderPath;
     private static String settingsPath;
-
     private static int bitlengthvalue;
     private static String publicPrefix, privatePrefix;
 
+    //Sets up everything to run
     public static void main(String[] args) {
+        //Obtains the user's home directory and digs into the AppData directory to store settings files
+        //Works to create the baseline
         settingsFolderPath = System.getProperty("user.home") + "\\AppData\\Local\\EncryptionProject\\settings\\";
-        themeSettingsFilePath = settingsFolderPath + "\\theme.conf";
-
+        //Ensures the directory for settings exists
         File folder = new File(settingsFolderPath);
         folder.mkdirs();
-
+        //Sets the theme settings file path value
+        themeSettingsFilePath = settingsFolderPath + "\\theme.conf";
+        //Sets the settings file path value
         settingsPath = settingsFolderPath += "\\settings.conf";
 
+        //Tries to set default theme to Nimbus so colors can be altered
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception err) {
             err.printStackTrace();
         }
 
+        //Tries to load the theme value from file. Otherwise, defaults to dark
+        //TODO: Update for settings menu
         try {
             loadTheme();
         } catch (Exception e) {
             isDark = true;
         }
 
-//        try{
-//            loadSettings();
-//        } catch (FileException e) {
-//            bitlengthvalue = 512;
-//            publicPrefix = "public-";
-//            privatePrefix = "private-";
-//            isDark = true;
-//        }
-
+        //Initializes the objects now that the theme has been set so it applies when
+        //they are created
         menu = new Menu();
         create = new CreateWindow();
         encryptor = new EncryptorWindow();
         fileErrorWindow = new FileIOError();
         settingsmenu = new SettingsMenu();
 
+        //Applies the theme
+        applyTheme();
+
+        //Tries to read the saved settings. Otherwise, sets default values to avoid
+        //issues.
         try {
             readSettingsFile();
         } catch (FileException e) {
-            displayFileError(e.getMessage() + "\nDefault values have been set.");
+            displayFileError("Error reading settings file. Default values have been set.");
             bitlengthvalue = 512;
             publicPrefix = "public-";
             privatePrefix = "private-";
         }
 
+        //Updates settings menu with the newly read values
+        //TODO: Consider changing logic
         settingsmenu.updateValues();
-
-        applyTheme();
-        menu.visible();
+        //Sets the menu visible
+        menu.setVisible(true);
     }//end main
 
-    public void setMenuVisible(boolean state) {
-        if (state) {
-            menu.visible();
-        } else {
-            menu.invisible();
-        }
-    }//end setmenuvisible
+    //Set menu visibility
+    public void setMenuVisible(boolean state) {menu.setVisible(state);}//end setmenuvisible
 
-    public void setCreateVisible(boolean state) {
-        create.setVisible(state);
-    }//end setcreatevisible
+    //Set key creator visibility
+    public void setCreateVisible(boolean state) {create.setVisible(state);}
 
+    //Set Encryptor visibility
     public void setEncryptVisible(boolean state) {
         if (state) {
             encryptor.visible();
@@ -91,10 +93,12 @@ public class Command {
         }
     }
 
+    //Set SettingsMenu visibility
     public void setSettingsMenuVisible(boolean state) {
         settingsmenu.setVisible(state);
     }
 
+    //Reads .keys files
     public String[] readKeyFile() throws FileException {
         try {
             return fileIO.readKeyFile();
@@ -103,6 +107,7 @@ public class Command {
         }
     }
 
+    //Writes .keys files
     public void writeKeyFile(BigInteger e, BigInteger d, BigInteger m) throws FileException {
         try {
             fileIO.writeKeyFile(e, d, m);
@@ -111,8 +116,11 @@ public class Command {
         }
     }
 
+    //Applies theme based on whether the current theme is supposed to be dark or light
     private static void applyTheme() {
+        //Checks if isDark is true or false
         if (isDark) {
+            //Set to the dark theme
             UIManager.put("nimbusBase", new Color(18,18,18));
             UIManager.put("nimbusBlueGrey", new Color(25,25,25));
             UIManager.put("control", new Color(20,20,20));//background
@@ -123,47 +131,35 @@ public class Command {
             UIManager.put("nimbusDisabledText", new Color(100,100,100));
             UIManager.put("Button.disabled", new Color(50,50,50));
         } else {
-            UIManager.put("nimbusBase", new Color(180,180,180));
-            UIManager.put("nimbusBlueGrey", new Color(200,200,200));
-            UIManager.put("control", new Color(220,220,220));
+            //Set to the light theme
+            UIManager.put("nimbusBase", new Color(180, 180, 180));
+            UIManager.put("nimbusBlueGrey", new Color(200, 200, 200));
+            UIManager.put("control", new Color(220, 220, 220));
             UIManager.put("nimbusLightBackground", Color.WHITE);
-            UIManager.put("nimbusSelectionBackground", new Color(100,149,237));
+            UIManager.put("nimbusSelectionBackground", new Color(100, 149, 237));
             UIManager.put("text", Color.BLACK);
             UIManager.put("nimbusSelectedText", Color.BLACK);
             UIManager.put("nimbusDisabledText", Color.GRAY);
-            UIManager.put("Button.disabled", new Color(125,125,125));
-        }
-        //old method, had caching issues
-//        SwingUtilities.updateComponentTreeUI(menu.getMenuFrame());
-//        menu.getMenuFrame().revalidate();
-//        menu.getMenuFrame().repaint();
-//
-//        SwingUtilities.updateComponentTreeUI(create.getFrame());
-//        create.getFrame().revalidate();
-//        create.getFrame().repaint();
-//
-//        SwingUtilities.updateComponentTreeUI(encryptor.getFrame());
-//        encryptor.getFrame().revalidate();
-//        encryptor.getFrame().repaint();
-//
-//        SwingUtilities.updateComponentTreeUI(fileErrorWindow.getFrame());
-//        fileErrorWindow.getFrame().revalidate();
-//        fileErrorWindow.getFrame().repaint();
+            UIManager.put("Button.disabled", new Color(125, 125, 125));
+        }//End of the theme-setting logic
 
-        //SwingUtilities.updateComponentTreeUI(settingsmenu.getFrame());
-        //settingsmenu.getFrame().revalidate();
-        //settingsmenu.getFrame().repaint();
-
+        //Updates the theme button
+        //TODO: Readjust for new settings menu
         menu.updateBGButton();
     }//end applyTheme
 
+    //Update the theme value
+    //TODO: Update for new settings menu
     public void updateTheme() {
+        //Toggles the isDark value
         isDark = !isDark();
         try {
+            //Writes the new theme setting to file
             fileIO.writeOneLineFile(themeSettingsFilePath, isDark ? "dark" : "light");
         } catch (Exception e) {
             displayFileError(new FileException(e));
         }
+        //Restart to apply theme
         restart();
     }
 

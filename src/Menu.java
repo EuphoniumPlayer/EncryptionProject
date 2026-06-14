@@ -58,12 +58,7 @@ public class Menu implements ActionListener {
         }
     }//end actions
 
-    public void visible() {
-        menu.setVisible(true);
-    }
-    public void invisible() {
-        menu.setVisible(false);
-    }
+    public void setVisible(boolean state) {menu.setVisible(state);}
 
     private void setBGButton() {
         if (command.isDark()) {
