@@ -154,13 +154,6 @@ public class CreateWindow implements ActionListener {
         }
     }//end constructor
 
-    public void visible() {
-        creator.setVisible(true);
-    }
-    public void invisible() {
-        creator.setVisible(false);
-    }
-
     @Override
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == pfield) {
@@ -251,7 +244,7 @@ public class CreateWindow implements ActionListener {
         }//end createkey
 
         if (event.getSource() == back) {
-            invisible();
+            setVisible(false);
             command.setMenuVisible(true);
         }//end back
 
@@ -316,4 +309,5 @@ public class CreateWindow implements ActionListener {
     public JFrame getFrame() {
         return this.creator;
     }
+    public void setVisible(boolean state) {creator.setVisible(state);}
 }

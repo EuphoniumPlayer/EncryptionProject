@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -31,7 +32,7 @@ public class SettingsMenu implements ActionListener {
 
         bitlength = new JTextField();
         bitlength.setFont(tools.mainfont);
-        bitlength.setText(String.valueOf(command.getBitLength()));
+        bitlength.setText(String.valueOf(Command.getBitLength()));
         bitlength.setBounds(25,65,100,30);
         textFields[0] = bitlength;
 
@@ -42,10 +43,37 @@ public class SettingsMenu implements ActionListener {
 
         publicPrefix = new JTextField();
         publicPrefix.setFont(tools.mainfont);
+        publicPrefix.setText(Command.getPublicPrefix());
+        publicPrefix.setBounds(25, 150, 400, 30);
+        textFields[1] = publicPrefix;
+
+        privPreLabel = new JLabel("Key 2 prefix:");
+        privPreLabel.setFont(tools.mainfont);
+        privPreLabel.setFocusable(false);
+        privPreLabel.setBounds(25, 195, 400, 30);
+
+        privatePrefix = new JTextField();
+        privatePrefix.setFont(tools.mainfont);
+        privatePrefix.setText(Command.getPrivatePrefix());
+        privatePrefix.setBounds(25, 235, 400, 30);
+
+//        for (JTextField field : textFields) {
+//            field.getDocument().addDocumentListener(new DocumentListener() {
+//                @Override
+//                public void insertUpdate(DocumentEvent e) {}
+//                @Override
+//                public void removeUpdate(DocumentEvent e) {}
+//                @Override
+//                public void changedUpdate(DocumentEvent e) {}
+//            });
+//        }
 
         frame.add(bitlabel);
         frame.add(bitlength);
         frame.add(pubPreLabel);
+        frame.add(publicPrefix);
+        frame.add(privPreLabel);
+        frame.add(privatePrefix);
         frame.setVisible(true);
     }//end of constructor
 
@@ -56,6 +84,11 @@ public class SettingsMenu implements ActionListener {
     public void setVisible(boolean state) {
         frame.setVisible(state);
     }//end of setVisible
+    public void updateValues() {
+        bitlength.setText(String.valueOf(Command.getBitLength()));
+        publicPrefix.setText(Command.getPublicPrefix());
+        privatePrefix.setText(Command.getPrivatePrefix());
+    }
 
     @Override
     public void actionPerformed(ActionEvent event) {

@@ -18,6 +18,7 @@ public class Command {
     private static String settingsPath;
 
     private static int bitlengthvalue;
+    private static String publicPrefix, privatePrefix;
 
     public static void main(String[] args) {
         settingsFolderPath = System.getProperty("user.home") + "\\AppData\\Local\\EncryptionProject\\settings\\";
@@ -55,6 +56,17 @@ public class Command {
         fileErrorWindow = new FileIOError();
         settingsmenu = new SettingsMenu();
 
+        try {
+            readSettingsFile();
+        } catch (FileException e) {
+            displayFileError(e.getMessage() + "\nDefault values have been set.");
+            bitlengthvalue = 512;
+            publicPrefix = "public-";
+            privatePrefix = "private-";
+        }
+
+        settingsmenu.updateValues();
+
         applyTheme();
         menu.visible();
     }//end main
@@ -68,11 +80,7 @@ public class Command {
     }//end setmenuvisible
 
     public void setCreateVisible(boolean state) {
-        if (state) {
-            create.visible();
-        } else {
-            create.invisible();
-        }
+        create.setVisible(state);
     }//end setcreatevisible
 
     public void setEncryptVisible(boolean state) {
@@ -100,14 +108,6 @@ public class Command {
             fileIO.writeKeyFile(e, d, m);
         } catch (FileException error) {
             throw error;
-        }
-    }
-
-    public ArrayList<String> readFile(String path) throws FileException {
-        try {
-            return fileIO.readFile(path);
-        } catch (Exception e) {
-            throw new FileException(e);
         }
     }
 
@@ -180,28 +180,31 @@ public class Command {
         }
     }
 
-    private static void readBitLength() throws FileException {
+    private static void readSettingsFile() throws FileException {
         try {
-
+            ArrayList<String> settings = fileIO.readFile(settingsPath);
+            bitlengthvalue = Integer.parseInt(settings.get(0));
+            publicPrefix = settings.get(1);
+            privatePrefix = settings.get(2);
         } catch (Exception e) {
             throw new FileException(e);
         }
     }
 
-    public boolean isDark() {
-        return this.isDark;
+    public static boolean isDark() {
+        return isDark;
     }
-
-    public int getBitLength() {
+    public static int getBitLength() {
         return bitlengthvalue;
     }
-
-    public void displayFileError(FileException error) {
+    public static void displayFileError(FileException error) {
         fileErrorWindow.displayError(error);
     }
     public static void displayFileError(String error) {
         fileErrorWindow.displayError(error);
     }
+    public static String getPublicPrefix() {return publicPrefix;}
+    public static String getPrivatePrefix() {return privatePrefix;}
 
     public static void restart() {
         String origin = ProcessHandle.current().info().command().orElseThrow();

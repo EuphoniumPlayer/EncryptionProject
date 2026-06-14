@@ -251,4 +251,5 @@ public class EncryptorWindow implements ActionListener {
     public JFrame getFrame() {
         return this.encryptor;
     }
+    public void setVisible(boolean state) {encryptor.setVisible(state);}
 }
